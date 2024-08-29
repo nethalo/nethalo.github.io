@@ -137,7 +137,7 @@ googlefonts:
 # Theme and colors
 chulapa-skin: 
   highlight     : fruity # default["default"]
-  skin         : academia # Optional predefined skins
+  skin         : twitter-dim # Optional predefined skins
   autothemer    :  true # Bool: Use autotheming
   vars          :    
     primary     : "#ffbe98" #default ["#007bff"] - Bootstrap blue
@@ -164,8 +164,9 @@ defaults:
     scope:
       path: ""
     values:
-      layout: "default"
-      header_type: "base"
+      layout: "minimal"
+      header_type: "hero"
+      header_img: /assets/img/gallery/a-minimalist-logo.jpeg
       include_on_search   : false
       cloudtag_url        : /tags #This is where the link on tags would redirect
       cloudcategory_url   : /categories #This is where the link on categories would redirect

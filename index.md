@@ -4,7 +4,7 @@ title: Rendiment
 header_type: hero
 subtitle: Databases
 header_type: splash
-header_img: /assets/img/gallery/city-spain-dense-17658.jpg
+header_img: /assets/img/gallery/a-minimalist-logo.jpeg
 ---
 
 Click [**Use this template**](https://github.com/dieghernan/chulapa-101/generate) button above for cloning this repo and get started with [Chulapa Jekyll theme](https://github.com/dieghernan/chulapa).

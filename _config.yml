@@ -109,12 +109,8 @@ navbar:
         url   : /categories
       - title : Archive
         url   : /archive
-      - title : Current skin
-        url   : /current-skin
   - title   : Docs
     url     : https://dieghernan.github.io/chulapa/docs/01-install
-  - title   : Use this template
-    url     : https://github.com/dieghernan/chulapa-101/generate
 #  - title   : # Label submenu
 #    child:		
 #    - title: # Child label		
@@ -126,7 +122,7 @@ footer:
   links:
     - label : Repo on Github # Label
       icon  : fab fa-github # Fontawesome 5 icon
-      url   : https://github.com/dieghernan/chulapa-101 # A link or email: https://twitter.com/jack, mail@example.com
+      url   : https://github.com/nethalo # A link or email: https://twitter.com/jack, mail@example.com
     - label: "RSS"
       icon: "fa fa-rss"
       url:  "./atom.xml"
@@ -139,7 +135,7 @@ googlefonts:
 
 # Theme and colors
 chulapa-skin: 
-  highlight     :  # default["default"]
+  highlight     : fruity # default["default"]
   skin         : academia # Optional predefined skins
   autothemer    :  true # Bool: Use autotheming
   vars          :    

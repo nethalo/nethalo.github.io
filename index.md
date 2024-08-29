@@ -2,9 +2,10 @@
 layout: minimal
 title: Layout minimal
 subtitle: Databases
+excerpt: Use the layout minimal with html to unleash your creativity
+categories: [demo,layout]
 header_type: splash
 header_img: /assets/img/gallery/a-minimalist-logo.jpeg
-categories: [demo,layout]
 tags: [layout-minimal,header-splash, image, project-links, bootstrap]
 project_links:
     - url: https://startbootstrap.com/previews/one-page-wonder/

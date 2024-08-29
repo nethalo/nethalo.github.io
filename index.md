@@ -1,15 +1,13 @@
 ---
-layout: minimal
 title: Layout minimal
 subtitle: Databases
-excerpt: Use the layout minimal with html to unleash your creativity
 categories: [demo,layout]
-header_type: splash
 header_img: "./assets/img/gallery/a-minimalist-logo.jpeg"
 tags: [layout-minimal,header-splash, image, project-links, bootstrap]
-project_links:
-    - url: https://startbootstrap.com/previews/one-page-wonder/
-      label: Adapted from Start Bootstrap
+show_sociallinks  : true
+show_tags         : true
+show_categories   : true
+show_bottomnavs   : true
 ---
 
 Contains basic configuration to get you a site with:

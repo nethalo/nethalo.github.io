@@ -1,9 +1,10 @@
 ---
-title: Layout minimal
-subtitle: Databases
+layout: indexcategory
+title: Rendiment
+subtitle: Database Performance made simple
 categories: [demo,layout]
-header_img: "./assets/img/gallery/a-minimalist-logo.jpeg"
-tags: [layout-minimal,header-splash, image, project-links, bootstrap]
+og_img: "./assets/img/gallery/a-minimalist-logo.jpeg"
+tags: [rendiment,home, image]
 show_sociallinks  : true
 show_tags         : true
 show_categories   : true

@@ -7,3 +7,5 @@ group :jekyll_plugins do
   gem 'jekyll-sitemap'
   gem 'jekyll-include-cache'
 end
+
+gem 'faraday-retry'

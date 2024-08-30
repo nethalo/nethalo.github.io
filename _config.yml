@@ -164,7 +164,7 @@ defaults:
     scope:
       path: ""
     values:
-      layout: "minimal"
+      layout: "default"
       header_type: "splash"
       header_img: /assets/img/gallery/a-flyer.jpeg
       include_on_search   : false

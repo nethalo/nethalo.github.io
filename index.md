@@ -1,7 +1,6 @@
 ---
 layout: indexcategory
 title: " "
-subtitle: " "
 categories: [demo,layout]
 og_img: /assets/img/gallery/a-sea.jpeg
 tags: [rendiment,home, image]

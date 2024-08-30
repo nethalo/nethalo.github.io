@@ -1,7 +1,7 @@
 ---
 layout: indexcategory
-title: Rendiment
-subtitle: Database Performance made simple
+title: " "
+subtitle: " "
 categories: [demo,layout]
 og_img: /assets/img/gallery/a-sea.jpeg
 tags: [rendiment,home, image]

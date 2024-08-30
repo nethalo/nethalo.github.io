@@ -3,7 +3,7 @@ layout: indexcategory
 title: Rendiment
 subtitle: Database Performance made simple
 categories: [demo,layout]
-og_img: /assets/img/gallery/a-minimalist-logo.jpeg
+og_img: /assets/img/gallery/a-sea.jpeg
 tags: [rendiment,home, image]
 show_sociallinks  : true
 show_tags         : true

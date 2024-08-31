@@ -12,7 +12,7 @@ show_bottomnavs   : true
 <div style="
         width: 100%;
         height: 50vh;
-        background-color: #de313d;
+        background-color: #e7494c;
         display: flex;
         justify-content: center;
         align-items: center;

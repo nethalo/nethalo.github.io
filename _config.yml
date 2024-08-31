@@ -141,6 +141,7 @@ chulapa-skin:
   autothemer    :  true # Bool: Use autotheming
   vars          :    
     primary     : "#ffbe98" #default ["#007bff"] - Bootstrap blue
+    background-image: url('https://nethalo.github.io/assets/img/gallery/a-flyer.jpeg')
     
 # D. Jekyll Defaults and collections: see https://jekyllrb.com/
 

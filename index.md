@@ -10,16 +10,18 @@ show_categories   : true
 show_bottomnavs   : true
 ---
 <div style="
-        background-image: url('https://nethalo.github.io/assets/img/gallery/a-flyer.jpeg');
-        background-position: center;
-        background-repeat: no-repeat;
-        margin: 0;
-        padding: 0;
+        width: 100%;
+        height: 200px;
+        background-color: #e86c3e;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 70vh;
-        background-color: #e86c3e;
+    ">
+    <div style="
+        background-image: url('https://nethalo.github.io/assets/img/gallery/a-flyer.jpeg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
     "></div>
-
+</div>
 Rendiment

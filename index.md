@@ -1,5 +1,5 @@
 ---
-layout: indexcategory
+layout: minimal
 title: " "
 categories: [demo,layout]
 og_img: /assets/img/gallery/a-minimalist-logo.jpeg

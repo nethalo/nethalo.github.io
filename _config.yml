@@ -165,7 +165,7 @@ defaults:
       path: ""
     values:
       layout: "default"
-      header_type: "splash"
+      header_type: "hero"
       header_img: /assets/img/gallery/a-flyer.jpeg
       include_on_search   : false
       cloudtag_url        : /tags #This is where the link on tags would redirect

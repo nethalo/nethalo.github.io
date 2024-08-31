@@ -20,7 +20,7 @@ show_bottomnavs   : true
     <div style="
         width: 100%;
         height: 100%;
-        background-image: url('https://nethalo.github.io/assets/img/gallery/a-flyer.jpeg');
+        background-image: url('https://nethalo.github.io/assets/img/gallery/a-new-flyer.png');
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;

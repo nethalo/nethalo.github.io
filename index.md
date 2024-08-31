@@ -8,8 +8,10 @@ show_sociallinks  : true
 show_tags         : true
 show_categories   : true
 show_bottomnavs   : true
-header_type: "splash"
-header_img: /assets/img/gallery/a-flyer.jpeg
 ---
-
+<header style="background-image: url('https://nethalo.github.io/assets/img/gallery/a-flyer.jpeg')">
+<div class="container-lg">
+   <h1 class="p-name"></h1>
+ </div>
+</header>
 Rendiment

@@ -35,12 +35,12 @@ show_bottomnavs   : true
 <div style="display: flex; justify-content: space-around; padding: 20px;">
         <div style="width: 30%; background-color: #ffffff; padding: 20px; box-sizing: border-box; text-align: center;">
             <img src="https://rendiment.io/assets/img/gallery/a-dev.png" alt="A Dev" style="max-width: 100%; height: auto; margin-bottom: 15px;">
-            <h2>Available for everyone</h2>
+            <h3>Available for everyone</h3>
             <span style="text-align: center; font-size: 1.00rem; font-family: Inter; font-weight: 200;">This is the text for column 1. You can replace this with your own content.</span>
         </div>
         <div style="width: 30%; background-color: #ffffff; padding: 20px; box-sizing: border-box; text-align: center;">
             <img src="https://rendiment.io/assets/img/gallery/a-plan.png" alt="A Plan" style="max-width: 100%; height: auto; margin-bottom: 15px;">
-            <h2>Native speaker</h2>
+            <h3>Native speaker</h3>
             <span style="text-align: center; font-size: 1.00rem; font-family: Inter; font-weight: 200;">This is the text for column 1. You can replace this with your own content.</span>
         </div>
         <div style="width: 30%; background-color: #ffffff; padding: 20px; box-sizing: border-box; text-align: center;">
@@ -48,6 +48,6 @@ show_bottomnavs   : true
                 <img src="https://rendiment.io/assets/img/gallery/a-speaker.png" alt="A Speaker" style="max-width: 100%; height: auto; margin-bottom: 15px; object-fit: cover;">
             </div>
         </div>
-        <h2>For the community</h2>
+        <h3>For the community</h3>
         <span style="text-align: center; font-size: 1.00rem; font-family: Inter; font-weight: 200;">This is the text for column 1. You can replace this with your own content.</span>
     </div>

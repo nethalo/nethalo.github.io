@@ -34,17 +34,20 @@ show_bottomnavs   : true
 <br/>
 <div style="display: flex; justify-content: space-around; padding: 20px;">
         <div style="width: 30%; background-color: #ffffff; padding: 20px; box-sizing: border-box; text-align: center;">
-            <img src="https://rendiment.io/assets/img/gallery/a-dev.png" alt="Image 1" style="max-width: 100%; height: auto; margin-bottom: 15px;">
-            <p>This is the text for column 1. You can replace this with your own content.</p>
+            <img src="https://rendiment.io/assets/img/gallery/a-dev.png" alt="A Dev" style="max-width: 100%; height: auto; margin-bottom: 15px;">
+            <h2>Available for everyone</h2>
+            <span style="text-align: center; font-size: 2.75rem; font-family: Inter; font-weight: 200;">This is the text for column 1. You can replace this with your own content.</span>
         </div>
         <div style="width: 30%; background-color: #ffffff; padding: 20px; box-sizing: border-box; text-align: center;">
-            <img src="https://rendiment.io/assets/img/gallery/a-plan.png" alt="Image 2" style="max-width: 100%; height: auto; margin-bottom: 15px;">
-            <p>This is the text for column 2. You can replace this with your own content.</p>
+            <img src="https://rendiment.io/assets/img/gallery/a-plan.png" alt="A Plan" style="max-width: 100%; height: auto; margin-bottom: 15px;">
+            <h2>Native speaker</h2>
+            <span style="text-align: center; font-size: 2.75rem; font-family: Inter; font-weight: 200;">This is the text for column 1. You can replace this with your own content.</span>
         </div>
         <div style="width: 30%; background-color: #ffffff; padding: 20px; box-sizing: border-box; text-align: center;">
-            <div style="width: 200px; height: 200px; border-radius: 50%; overflow: hidden;">
-                <img src="https://rendiment.io/assets/img/gallery/a-speaker.png" alt="Image 3" style="max-width: 100%; height: auto; margin-bottom: 15px; object-fit: cover;">
+            <div style="width: 300px; height: 300px; border-radius: 50%; overflow: hidden;">
+                <img src="https://rendiment.io/assets/img/gallery/a-speaker.png" alt="A Speaker" style="max-width: 100%; height: auto; margin-bottom: 15px; object-fit: cover;">
             </div>
-            <p>This is the text for column 3. You can replace this with your own content.</p>
         </div>
+        <h2>For the community</h2>
+        <span style="text-align: center; font-size: 2.75rem; font-family: Inter; font-weight: 200;">This is the text for column 1. You can replace this with your own content.</span>
     </div>

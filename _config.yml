@@ -79,8 +79,8 @@ algolia:
     - desc(subtitle)
     
 comments:
-  provider:         #Enable comments via Disqus, giscus or Cactus.chat
-  disqus_shortname: #Your site id : check your address https://{{ disqus.shortname }}.disqus.com/admin/
+  provider: Disqus        #Enable comments via Disqus, giscus or Cactus.chat
+  disqus_shortname: rendiment #Your site id : check your address https://{{ disqus.shortname }}.disqus.com/admin/
   cactus_shortname: #Your site id as registered with Cactus.chat
   
 # B. Navigation

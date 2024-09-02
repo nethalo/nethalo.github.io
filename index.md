@@ -27,6 +27,9 @@ show_bottomnavs   : true
         max-width: 1110px;
     "></div>
 </div>
- <p style="text-align: center; color: white; font-size: 2.75rem; font-family: Inter;">
-        Running as <span style="font-style: italic;">many</span> queries as possible, as <span style="font-style: italic;">fast</span> as possible
-    </p>
+<br/>
+<br/>
+ <div style="text-align: center; font-size: 2.75rem; font-family: Inter; font-weight: 200;">
+        Running as <span style="font-style: italic; font-family: serif; ">many</span> queries as possible, as <span style="font-style: italic; font-family: serif;">fast</span> as possible
+    </div>
+<br/>

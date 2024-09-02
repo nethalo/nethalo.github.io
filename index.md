@@ -36,18 +36,18 @@ show_bottomnavs   : true
         <div style="width: 30%; background-color: #ffffff; padding: 20px; box-sizing: border-box; text-align: center;">
             <img src="https://rendiment.io/assets/img/gallery/a-dev.png" alt="A Dev" style="max-width: 100%; height: auto; margin-bottom: 15px;">
             <h3>Available for everyone</h3>
-            <span style="text-align: center; font-size: 1.00rem; font-family: Inter; font-weight: 200;">This is the text for column 1. You can replace this with your own content.</span>
+            <span style="text-align: center; font-size: 1.00rem; font-family: Inter; font-weight: 200;">Natural language should be the main language. Explanations that doesn't sound like scientific papers.</span>
         </div>
         <div style="width: 30%; background-color: #ffffff; padding: 20px; box-sizing: border-box; text-align: center;">
             <img src="https://rendiment.io/assets/img/gallery/a-plan.png" alt="A Plan" style="max-width: 100%; height: auto; margin-bottom: 15px;">
             <h3>Native speaker</h3>
-            <span style="text-align: center; font-size: 1.00rem; font-family: Inter; font-weight: 200;">This is the text for column 1. You can replace this with your own content.</span>
+            <span style="text-align: center; font-size: 1.00rem; font-family: Inter; font-weight: 200;">An assistant that understands databases. Familiarity with a query execution plan should not be a prime</span>
         </div>
         <div style="width: 30%; background-color: #ffffff; padding: 20px; box-sizing: border-box; text-align: center;">
             <div style="width: 300px; height: 300px; border-radius: 50%; overflow: hidden;">
                 <img src="https://rendiment.io/assets/img/gallery/a-speaker.png" alt="A Speaker" style="max-width: 100%; height: auto; margin-bottom: 15px; object-fit: cover;">
             </div>
+            <h3>For the community</h3>
+            <span style="text-align: center; font-size: 1.00rem; font-family: Inter; font-weight: 200;">Community is all. Is what make this tech strong. Let's give back</span>
         </div>
-        <h3>For the community</h3>
-        <span style="text-align: center; font-size: 1.00rem; font-family: Inter; font-weight: 200;">This is the text for column 1. You can replace this with your own content.</span>
     </div>

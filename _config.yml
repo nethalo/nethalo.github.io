@@ -132,6 +132,7 @@ footer:
 # Google Fonts https://fonts.google.com/, add as many as you need
 googlefonts:
   - url : 'https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap'
+  - url : 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap'
  
 
 # Theme and colors
@@ -142,6 +143,8 @@ chulapa-skin:
   vars          :    
     primary     : "#ffbe98" #default ["#007bff"] - Bootstrap blue
     background-image: url('https://nethalo.github.io/assets/img/gallery/a-flyer.jpeg')
+    font-family-base: "Inter"
+    font-weight-normal: "100"
     
 # D. Jekyll Defaults and collections: see https://jekyllrb.com/
 

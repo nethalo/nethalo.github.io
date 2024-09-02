@@ -1,7 +1,7 @@
 ---
-title: Test markdown
-subtitle: Each post also has a subtitle
-tags: [markdown, exciting-stuff]
+title: Monitoring MySQL with Coroot
+subtitle: First impressions
+tags: [observability, mysql, coroot, monitoring]
 ---
 
 You can write regular [markdown](http://markdowntutorial.com/) here and Jekyll will automatically convert it to a nice webpage.  I strongly encourage you to [take 5 minutes to learn how to write in markdown](http://markdowntutorial.com/) - it'll teach you how to transform regular text into bold/italics/headings/tables/etc.

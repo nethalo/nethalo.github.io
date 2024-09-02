@@ -42,7 +42,9 @@ show_bottomnavs   : true
             <p>This is the text for column 2. You can replace this with your own content.</p>
         </div>
         <div style="width: 30%; background-color: #ffffff; padding: 20px; box-sizing: border-box; text-align: center;">
-            <img src="https://rendiment.io/assets/img/gallery/a-speaker.png" alt="Image 3" style="max-width: 100%; height: auto; margin-bottom: 15px;">
+            <div style="width: 200px; height: 200px; border-radius: 50%; overflow: hidden;">
+                <img src="https://rendiment.io/assets/img/gallery/a-speaker.png" alt="Image 3" style="max-width: 100%; height: auto; margin-bottom: 15px; object-fit: cover;">
+            </div>
             <p>This is the text for column 3. You can replace this with your own content.</p>
         </div>
     </div>

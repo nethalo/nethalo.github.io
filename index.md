@@ -36,12 +36,12 @@ show_bottomnavs   : true
         <div style="width: 30%; background-color: #ffffff; padding: 20px; box-sizing: border-box; text-align: center;">
             <img src="https://rendiment.io/assets/img/gallery/a-dev.png" alt="A Dev" style="max-width: 100%; height: auto; margin-bottom: 15px;">
             <h2>Available for everyone</h2>
-            <span style="text-align: center; font-size: 2.75rem; font-family: Inter; font-weight: 200;">This is the text for column 1. You can replace this with your own content.</span>
+            <span style="text-align: center; font-size: 1.00rem; font-family: Inter; font-weight: 200;">This is the text for column 1. You can replace this with your own content.</span>
         </div>
         <div style="width: 30%; background-color: #ffffff; padding: 20px; box-sizing: border-box; text-align: center;">
             <img src="https://rendiment.io/assets/img/gallery/a-plan.png" alt="A Plan" style="max-width: 100%; height: auto; margin-bottom: 15px;">
             <h2>Native speaker</h2>
-            <span style="text-align: center; font-size: 2.75rem; font-family: Inter; font-weight: 200;">This is the text for column 1. You can replace this with your own content.</span>
+            <span style="text-align: center; font-size: 1.00rem; font-family: Inter; font-weight: 200;">This is the text for column 1. You can replace this with your own content.</span>
         </div>
         <div style="width: 30%; background-color: #ffffff; padding: 20px; box-sizing: border-box; text-align: center;">
             <div style="width: 300px; height: 300px; border-radius: 50%; overflow: hidden;">
@@ -49,5 +49,5 @@ show_bottomnavs   : true
             </div>
         </div>
         <h2>For the community</h2>
-        <span style="text-align: center; font-size: 2.75rem; font-family: Inter; font-weight: 200;">This is the text for column 1. You can replace this with your own content.</span>
+        <span style="text-align: center; font-size: 1.00rem; font-family: Inter; font-weight: 200;">This is the text for column 1. You can replace this with your own content.</span>
     </div>

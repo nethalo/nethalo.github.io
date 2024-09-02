@@ -44,7 +44,7 @@ show_bottomnavs   : true
             <span style="text-align: center; font-size: 1.00rem; font-family: Inter; font-weight: 200;">An assistant that understands databases. Familiarity with a query execution plan should not be a prime</span>
         </div>
         <div style="width: 30%; background-color: #ffffff; padding: 20px; box-sizing: border-box; text-align: center;">
-            <div style="width: 300px; height: 300px; border-radius: 50%; overflow: hidden;">
+            <div style="max-width: 300px; max-height: 300px; border-radius: 50%; overflow: hidden;">
                 <img src="https://rendiment.io/assets/img/gallery/a-speaker.png" alt="A Speaker" style="max-width: 100%; height: auto; margin-bottom: 15px; object-fit: cover;">
             </div>
             <h3>For the community</h3>

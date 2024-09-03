@@ -7,6 +7,8 @@ header_type: image
 header_img: /assets/img/gallery/a-magnifier.png
 ---
 
+_Originally published in https://www.percona.com/blog/2019/12/20/contention-in-mysql-innodb-useful-info-from-the-semaphores-section/ but no longer available there_
+
 ## Identifying Contention Points in MySQL Using InnoDB Semaphores
 
 In a high concurrency environment, contention is inevitable. This guide explores how to identify contention points using the SEMAPHORES section from the `SHOW ENGINE INNODB STATUS` command output.

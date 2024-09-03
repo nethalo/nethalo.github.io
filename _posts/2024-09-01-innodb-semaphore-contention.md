@@ -1,10 +1,10 @@
 ---
 title: Contention in MySQL InnoDB
-subtitle: Useful Info From the Semaphores Section
+subtitle: Useful info from the semaphores section
 tags: [innodb, mysql, contention, semaphores]
 ---
 
-# Identifying Contention Points in MySQL Using InnoDB Semaphores
+## Identifying Contention Points in MySQL Using InnoDB Semaphores
 
 In a high concurrency environment, contention is inevitable. This guide explores how to identify contention points using the SEMAPHORES section from the `SHOW ENGINE INNODB STATUS` command output.
 

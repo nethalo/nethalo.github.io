@@ -1,7 +1,10 @@
 ---
 title: Contention in MySQL InnoDB
 subtitle: Useful info from the semaphores section
+categories: [mysql,innodb]
 tags: [innodb, mysql, contention, semaphores]
+header_type: image
+header_img: /assets/img/gallery/a-magnifier.png
 ---
 
 ## Identifying Contention Points in MySQL Using InnoDB Semaphores

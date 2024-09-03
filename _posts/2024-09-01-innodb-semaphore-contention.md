@@ -112,11 +112,14 @@ The InnoDB storage engine code is inside the "innobase" directory. To find the c
 
 Once you've found the correct files, you can view them directly on GitHub. For example:
 
-- https://github.com/percona/percona-server/blob/Percona-Server-5.7.28-31/storage/innobase/btr/btr0sea.cc#L1121
-- https://github.com/percona/percona-server/blob/Percona-Server-5.7.28-31/storage/innobase/buf/buf0buf.cc#L1433
-- https://github.com/percona/percona-server/blob/Percona-Server-5.7.28-31/storage/innobase/btr/btr0cur.cc#L5889
+<ul>
+<li><a href="https://github.com/percona/percona-server/blob/Percona-Server-5.7.28-31/storage/innobase/btr/btr0sea.cc#L1121" target="_blank">https://github.com/percona/percona-server/blob/Percona-Server-5.7.28-31/storage/innobase/btr/btr0sea.cc#L1121</a></li>
+<li><a href="https://github.com/percona/percona-server/blob/Percona-Server-5.7.28-31/storage/innobase/buf/buf0buf.cc#L1433" target="_blank">https://github.com/percona/percona-server/blob/Percona-Server-5.7.28-31/storage/innobase/buf/buf0buf.cc#L1433</a></li>
+<li><a href="https://github.com/percona/percona-server/blob/Percona-Server-5.7.28-31/storage/innobase/btr/btr0cur.cc#L5889" target="_blank">https://github.com/percona/percona-server/blob/Percona-Server-5.7.28-31/storage/innobase/btr/btr0cur.cc#L5889</a></li>
+</ul>
 
 Each file typically has a description at the top:
+
 ```
 - btr0sea.cc: "The index tree adaptive search" (Adaptive Hash Index - AHI)
 - buf0buf.cc: "The database buffer buf_pool" (InnoDB Buffer Pool)

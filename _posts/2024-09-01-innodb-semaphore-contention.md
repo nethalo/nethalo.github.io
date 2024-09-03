@@ -71,10 +71,11 @@ In our example:
 
 1. MySQL version: Percona Server 5.7.28-31
 2. Files and lines of interest:
+
 ```
-   - btr0cur.cc line 5889
-   - buf0buf.cc line 1433
-   - btr0sea.cc line 1121
+- btr0cur.cc line 5889
+- buf0buf.cc line 1433
+- btr0sea.cc line 1121
 ```  
 
 ## Looking Inside the Code
@@ -111,15 +112,15 @@ The InnoDB storage engine code is inside the "innobase" directory. To find the c
 
 Once you've found the correct files, you can view them directly on GitHub. For example:
 
-- [https://github.com/percona/percona-server/blob/Percona-Server-5.7.28-31/storage/innobase/btr/btr0sea.cc#L1121]https://github.com/percona/percona-server/blob/Percona-Server-5.7.28-31/storage/innobase/btr/btr0sea.cc#L1121
-- [https://github.com/percona/percona-server/blob/Percona-Server-5.7.28-31/storage/innobase/buf/buf0buf.cc#L1433]https://github.com/percona/percona-server/blob/Percona-Server-5.7.28-31/storage/innobase/buf/buf0buf.cc#L1433
-- [https://github.com/percona/percona-server/blob/Percona-Server-5.7.28-31/storage/innobase/btr/btr0cur.cc#L5889]https://github.com/percona/percona-server/blob/Percona-Server-5.7.28-31/storage/innobase/btr/btr0cur.cc#L5889
+- https://github.com/percona/percona-server/blob/Percona-Server-5.7.28-31/storage/innobase/btr/btr0sea.cc#L1121
+- https://github.com/percona/percona-server/blob/Percona-Server-5.7.28-31/storage/innobase/buf/buf0buf.cc#L1433
+- https://github.com/percona/percona-server/blob/Percona-Server-5.7.28-31/storage/innobase/btr/btr0cur.cc#L5889
 
 Each file typically has a description at the top:
 ```
-- **btr0sea.cc:** "The index tree adaptive search" (Adaptive Hash Index - AHI)
-- **buf0buf.cc:** "The database buffer buf_pool" (InnoDB Buffer Pool)
-- **btr0cur.cc:** "The index tree cursor" (B-Tree where data exists in InnoDB)
+- btr0sea.cc: "The index tree adaptive search" (Adaptive Hash Index - AHI)
+- buf0buf.cc: "The database buffer buf_pool" (InnoDB Buffer Pool)
+- btr0cur.cc: "The index tree cursor" (B-Tree where data exists in InnoDB)
 ```
 
 By examining these files and the specific lines mentioned in the SEMAPHORES output, you can gain insight into what operations were causing contention.

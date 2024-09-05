@@ -21,12 +21,18 @@ timezone                : America/New_York    #"Europe/Madrid ,see https://jekyl
 og_image                :     #default[author.avatar (see below)] or [github-avatar]
 #twitter_site            :     #Avoid @
 author:
-  name                  :  Rendiment   # Name Surname Company
-  avatar                :     # Try a square file. Info: Your github avatar on https://github.com/[USERNAME].png
+  name                  :  Daniel Guzman Burgos   # Name Surname Company
+  avatar                :  https://github.com/nethalo.png   # Try a square file. Info: Your github avatar on https://github.com/[USERNAME].png
   location              :  "Colombia"   # New York, USA 
   links:                
     - url:  contact@rendiment.io #A link or email: https://twitter.com/jack, mail@example.com
       icon: fa-solid fa-envelope # A Fontawesome 5 code: fab fa-twitter - see https://fontawesome.com/
+    - url: https://www.linkedin.com/in/danielmauricioguzman/
+      icon: fab fa-linkedin
+      label: LinkedIn
+    - url: https://github.com/nethalo
+      icon: fab fa-github
+      label: GitHub
 #    - url:  # Another link
 #      icon: # Anothet FontAwesome code
 

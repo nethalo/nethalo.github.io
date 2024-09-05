@@ -86,7 +86,7 @@ Let's move on to a different usage: Finding Bottlenecks.
 
 # Ethernal Love to FlameGraph 
 
-If you have never being exposed to the concept of FlameGraphs, it will be worth to take a detour and read Brendan Gregg's documentation about it: https://www.brendangregg.com/flamegraphs.html
+If you have never being exposed to the concept of FlameGraphs, it will be worth to take a detour and read Brendan Gregg's documentation about it: <a target="_blank" href="https://www.brendangregg.com/flamegraphs.html">https://www.brendangregg.com/flamegraphs.html</a>
 
 One of the things that i like the most about Coroot is the continuous profiling feature. The whole explanation of the feature can be read at https://coroot.com/docs/coroot-community-edition/profiling/overview but the important piece of information here is that spotting bottlenecks can become a simple task....with time. But once you are comfortable with this approach, is an one-way trip.
 

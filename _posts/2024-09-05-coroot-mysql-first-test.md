@@ -10,7 +10,7 @@ header_img: /assets/img/gallery/a-flamegraph.png
 # First approach
 
 
-I have being trying to test the MySQL monitoring feature since Coroot announced that it is suported. If you are not yet familiar with Coroot, the elevator pitch will be something around this lines: "An observability tool, heavily based on eBPF, so no one have to deal ever again with confusing instrumentation". More on https://coroot.com/
+I have being trying to test the MySQL monitoring feature since Coroot announced that it is suported. If you are not yet familiar with Coroot, the elevator pitch will be something around this lines: "An observability tool, heavily based on eBPF, so no one have to deal ever again with confusing instrumentation". More on <a target="_blank" href="https://coroot.com/">https://coroot.com/</a>
 
 So i just spinned a VM, installed docker and started to work. First was installing coroot. The Docker method is pretty straightforward ([a docker compose](https://coroot.com/docs/coroot-community-edition/getting-started/installation#docker)), nothing weird there.
 
@@ -141,8 +141,11 @@ Now it seems that the biggest bottleneck is still around fsync() calls but on a 
 
 This one might not be trivial to spot. So let's do some GitHub search on the Percona Server for MySQL repo: By searching for "log_remove_file(Log_files_context)", "log_flusher(log_t*)" the following files and lines are found to be the relevants:
 
-- https://github.com/percona/percona-server/blob/646a7cf4b6874eb4a9163078febc13c7938328e1/storage/innobase/log/log0files_io.cc#L1018
-- https://github.com/percona/percona-server/blob/646a7cf4b6874eb4a9163078febc13c7938328e1/storage/innobase/log/log0write.cc#L2502
+<ul>
+<li><a href="https://github.com/percona/percona-server/blob/646a7cf4b6874eb4a9163078febc13c7938328e1/storage/innobase/log/log0files_io.cc#L1018" target="_blank">hhttps://github.com/percona/percona-server/blob/646a7cf4b6874eb4a9163078febc13c7938328e1/storage/innobase/log/log0files_io.cc#L1018</a></li>
+<li><a href="https://github.com/percona/percona-server/blob/646a7cf4b6874eb4a9163078febc13c7938328e1/storage/innobase/log/log0write.cc#L2502" target="_blank">https://github.com/percona/percona-server/blob/646a7cf4b6874eb4a9163078febc13c7938328e1/storage/innobase/log/log0write.cc#L2502</a></li>
+</ul>
+
 
 What does it mean? Time spent on log rotation but mostly time spent on flushing logs. This comment on the code confirms it:
 

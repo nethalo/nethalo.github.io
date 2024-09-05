@@ -132,7 +132,7 @@ footer:
     - label: "RSS"
       icon: "fa fa-rss"
       url:  "./atom.xml"
-  copyright: # default is © <year> <name> 
+  copyright: © Rendiment 2024 # default is © <year> <name> 
   
 # C. Theme Settings
 # Google Fonts https://fonts.google.com/, add as many as you need

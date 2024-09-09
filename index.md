@@ -1,6 +1,6 @@
 ---
 layout: minimal
-title: "Rendiment"
+title: "Home"
 categories: [demo,layout]
 og_img: /assets/img/gallery/a-minimalist-logo.jpeg
 show_sociallinks  : true

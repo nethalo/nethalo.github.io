@@ -9,9 +9,9 @@ show_categories   : true
 show_bottomnavs   : true
 show_breadcrumb   : true
 breadcrumb_list   :
-- label: Home
+  - label: Home
     url: /
-- label: Blog
+  - label: Blog
     url: /blog/
 ---
 <div style="

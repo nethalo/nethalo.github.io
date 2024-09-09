@@ -14,7 +14,7 @@ show_comments     : true
 show_tags         : true
 show_categories   : true
 show_author       : true
-show_breadcrumb   : true
+show_breadcrumb   : false
 show_toc          : true
 ---
 

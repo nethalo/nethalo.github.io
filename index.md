@@ -7,6 +7,12 @@ show_sociallinks  : true
 show_tags         : true
 show_categories   : true
 show_bottomnavs   : true
+show_breadcrumb   : true
+breadcrumb_list   :
+- label: Home
+    url: /
+- label: Blog
+    url: /blog/
 ---
 <div style="
         width: 100%;

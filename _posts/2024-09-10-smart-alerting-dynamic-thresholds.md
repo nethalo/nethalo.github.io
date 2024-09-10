@@ -35,6 +35,8 @@ While static thresholds can be effective in certain scenarios, they come with li
 2. They often require frequent manual adjustments.
 3. They may not account for cyclical patterns (e.g., daily or seasonal variations).
 
+![alert_fatigue](/assets/img/gallery/a-fatigue-oncall.png)
+
 ## Dynamic world
 
 Modern times are dynamic! one needs to adapt or suffer extinction. Enter: dynamic thresholds. These are more advanced thresholds that will help to address many of the limitations of static thresholds. For example:
@@ -44,6 +46,8 @@ Modern times are dynamic! one needs to adapt or suffer extinction. Enter: dynami
 2. Time-aware: They can account for time-of-day, day-of-week, or seasonal variations.
 3. Anomaly detection: Instead of fixed thresholds, they can alert on deviations from expected behavior.
 4. Multi-dimensional: They can consider multiple metrics simultaneously to determine if an alert should be triggered.
+
+![alert_happy](/assets/img/gallery/a-happy-oncall.png)
 
 ### Hands on!
 
@@ -101,6 +105,12 @@ The same way i'm chosing 30%, I could go with 20% or 40%. It will depend of how 
 The actual math in Grafana Alert looks like this:
 
 `$C > $D *1.3 && $C > 0.6`
+
+The whole alert rule looks like the above image. As you cann see, the timeseries values has to be "Reduced" so that grafana math works:
+![alert_rule](/assets/img/gallery/a-grafana-alert-rule.png)
+
+A succesful alert test should look like this:
+![alert_rule](/assets/img/gallery/a-grafana-alert-test.png)
 
 How this will behave on a Friday night? Am i gonna be paged if the CPU goes beyond 60%? Well, probably no. If the 1-week-ago Friday CPU usage was around 70%-75%, for you to be paged, current value should be between 91%-97.5% (30% above last week) So if current Friday night usage is 70%, 75%, or even up to 90%, no pager. 
 

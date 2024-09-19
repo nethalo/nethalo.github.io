@@ -1,5 +1,5 @@
 ---
-title: Supercharge PMM Query Analytics: Using Redash to Optimize Database Performance
+title: "Supercharge PMM Query Analytics: Using Redash to Optimize Database Performance"
 subtitle: Customize QAN, Analyze Query Performance, and Unlock ClickHouse Data with Redash Integration
 categories: [mysql,postgresql,pmm,percona,monitoring]
 tags: [observability, mysql, postgresql, monitoring, redash]

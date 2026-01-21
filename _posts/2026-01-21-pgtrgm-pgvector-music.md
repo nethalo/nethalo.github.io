@@ -1,8 +1,8 @@
 ---
-title: Finding 'Abbey Road' When Users Type 'beatles abbey rd': Fuzzy and Semantic Search in PostgreSQL
+title: "Finding 'Abbey Road' When Users Type 'beatles abbey rd': Fuzzy and Semantic Search in PostgreSQL"
 subtitle: The DBA's Guide to Music Matching: pg_trgm and pgvector with 100K Spotify Albums
-categories: [postgresql, search]
-tags: [postgresql, pg_trgm, pgvector, embeddings, fuzzy-search, sentence-transformers, spotify]
+categories: [postgresql]
+tags: [postgresql, pg_trgm, pgvector, embeddings, fuzzy-search, sentence-transformers]
 header_type: image
 header_img: /assets/img/gallery/record-store-small.jpg
 ---

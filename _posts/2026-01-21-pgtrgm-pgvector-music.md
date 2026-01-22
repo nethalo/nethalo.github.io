@@ -194,8 +194,6 @@ WHERE album_normalized % 'abbey rd'
 ORDER BY score DESC;
 ```
 
-**Screenshot suggestion:** Show `EXPLAIN ANALYZE` output demonstrating the GIN index being used vs a sequential scan.
-
 ## Strengths and Weaknesses
 
 **pg_trgm works well for:**
@@ -556,7 +554,6 @@ SELECT reltuples FROM pg_class WHERE relname = 'album_catalog';
 -- If this is significantly higher than when you created the index, rebuild it
 ```
 
-**Screenshot suggestion:** Side-by-side `EXPLAIN ANALYZE` comparing fuzzy vs embedding search times on the same query.
 
 ---
 

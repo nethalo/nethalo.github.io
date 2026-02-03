@@ -140,6 +140,8 @@ The [ProxySQL FAQ](https://proxysql.com/documentation/frequently-asked-questions
 
 > "it will always use the same host to execute all queries to get more accurate results. Please note that it disables query routing."
 
+A brief note clarifying that the FAQ's statement: "Please note that it disables query routing" is misleading shorthand — **it only disables routing within transactions, not globally.**
+
 ## The Solution: transaction_persistent=0 for Testing
 
 For **testing** read/write split (not production!), set `transaction_persistent=0` on your sysbench user:

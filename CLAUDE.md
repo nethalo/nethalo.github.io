@@ -137,12 +137,12 @@ Custom Bootstrap 5 theme:
 ### Liquid Template Issues
 **Problem**: Division by zero error in reading time calculation when `site.words_per_minute` is not configured.
 ```liquid
-{% assign reading_time = words | divided_by: site.words_per_minute | default: 200 %}
+{% raw %}{% assign reading_time = words | divided_by: site.words_per_minute | default: 200 %}{% endraw %}
 ```
 **Solution**: Set default value BEFORE division operation:
 ```liquid
-{% assign wpm = site.words_per_minute | default: 200 %}
-{% assign reading_time = words | divided_by: wpm | at_least: 1 %}
+{% raw %}{% assign wpm = site.words_per_minute | default: 200 %}
+{% assign reading_time = words | divided_by: wpm | at_least: 1 %}{% endraw %}
 ```
 **Lesson**: The `| default:` filter applies to the variable it's attached to, not to the result of operations. Always set defaults before using variables in calculations.
 

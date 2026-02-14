@@ -1,0 +1,8 @@
+{% if page.show_tags and page.tags.size > 0 %}
+<div class="post-tags mb-3">
+  <i class="fas fa-tags"></i>
+  {% for tag in page.tags %}
+  <a href="{{ '/tags' | relative_url }}#{{ tag | slugify }}" class="badge bg-secondary text-decoration-none">{{ tag }}</a>
+  {% endfor %}
+</div>
+{% endif %}

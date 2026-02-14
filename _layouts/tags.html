@@ -1,0 +1,43 @@
+---
+layout: base
+---
+<div class="container my-5">
+  <header class="mb-5">
+    <h1 class="display-4">{{ page.title }}</h1>
+    {% if page.subtitle %}
+    <p class="lead text-muted">{{ page.subtitle }}</p>
+    {% endif %}
+  </header>
+
+  <!-- Tag Cloud -->
+  <div class="tag-cloud mb-5 text-center">
+    {% assign sorted_tags = site.tags | sort %}
+    {% for tag in sorted_tags %}
+      {% assign tag_name = tag[0] %}
+      {% assign tag_posts = tag[1] %}
+      <a href="#{{ tag_name | slugify }}" class="badge bg-secondary text-decoration-none">
+        {{ tag_name }} <span class="badge bg-light text-dark">{{ tag_posts.size }}</span>
+      </a>
+    {% endfor %}
+  </div>
+
+  <!-- Posts by Tag -->
+  {% for tag in sorted_tags %}
+    {% assign tag_name = tag[0] %}
+    {% assign tag_posts = tag[1] | sort: 'date' | reverse %}
+    <div class="mb-5" id="{{ tag_name | slugify }}">
+      <h2 class="mb-3">
+        <i class="fas fa-tag"></i> {{ tag_name }}
+        <span class="badge bg-secondary">{{ tag_posts.size }}</span>
+      </h2>
+      <ul class="post-list">
+        {% for post in tag_posts %}
+        <li>
+          <span class="post-date">{{ post.date | date: "%b %d, %Y" }}</span>
+          <a href="{{ post.url | relative_url }}" class="post-title">{{ post.title }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endfor %}
+</div>

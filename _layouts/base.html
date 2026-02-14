@@ -1,0 +1,84 @@
+---
+layout: compress
+---
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: 'en' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- SEO Meta Tags -->
+  <title>{% if page.title %}{{ page.title | append: ' ' | append: site.title_separator | append: ' ' | append: site.title }}{% else %}{{ site.title }}{% endif %}</title>
+  <meta name="description" content="{% if page.subtitle %}{{ page.subtitle }}{% elsif page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+  <meta name="author" content="{{ site.author.name }}">
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+  <meta property="og:description" content="{% if page.subtitle %}{{ page.subtitle }}{% elsif page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+  <meta property="og:type" content="{% if page.layout == 'default' %}article{% else %}website{% endif %}">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  {% if page.header_img %}
+  <meta property="og:image" content="{{ page.header_img | absolute_url }}">
+  {% elsif site.og_image %}
+  <meta property="og:image" content="{{ site.og_image | absolute_url }}">
+  {% elsif site.author.avatar %}
+  <meta property="og:image" content="{{ site.author.avatar }}">
+  {% endif %}
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+  <meta name="twitter:description" content="{% if page.subtitle %}{{ page.subtitle }}{% elsif page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+  {% if page.header_img %}
+  <meta name="twitter:image" content="{{ page.header_img | absolute_url }}">
+  {% endif %}
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
+
+  <!-- Google Fonts -->
+  {% for font in site.googlefonts %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="{{ font.url }}" rel="stylesheet">
+  {% endfor %}
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+
+  <!-- RSS Feed -->
+  <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ '/feed.xml' | relative_url }}">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="{{ '/favicon.ico' | relative_url }}">
+
+  <!-- Google Analytics -->
+  {% if site.gtag_id %}
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.gtag_id }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{ site.gtag_id }}');
+  </script>
+  {% endif %}
+</head>
+<body{% if page.layout == 'minimal' and page.url == '/' %} class="home-bg"{% endif %}>
+  {% include navbar.html %}
+
+  <main>
+    {{ content }}
+  </main>
+
+  {% include footer.html %}
+
+  <!-- Bootstrap 5 JS Bundle (includes Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
+</html>

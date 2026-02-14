@@ -1,0 +1,52 @@
+{% if paginator.total_pages > 1 %}
+<nav aria-label="Blog pagination" class="mt-5">
+  <ul class="pagination justify-content-center">
+    <!-- Previous Page -->
+    {% if paginator.previous_page %}
+    <li class="page-item">
+      <a class="page-link" href="{{ paginator.previous_page_path | relative_url }}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+      <span class="page-link" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </span>
+    </li>
+    {% endif %}
+
+    <!-- Page Numbers -->
+    {% for page in (1..paginator.total_pages) %}
+      {% if page == paginator.page %}
+        <li class="page-item active" aria-current="page">
+          <span class="page-link">{{ page }}</span>
+        </li>
+      {% elsif page == 1 %}
+        <li class="page-item">
+          <a class="page-link" href="{{ '/blog/' | relative_url }}">{{ page }}</a>
+        </li>
+      {% else %}
+        <li class="page-item">
+          <a class="page-link" href="{{ site.paginate_path | relative_url | replace: ':num', page }}">{{ page }}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+
+    <!-- Next Page -->
+    {% if paginator.next_page %}
+    <li class="page-item">
+      <a class="page-link" href="{{ paginator.next_page_path | relative_url }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+      <span class="page-link" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </span>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}

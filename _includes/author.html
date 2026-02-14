@@ -1,0 +1,30 @@
+{% if page.show_author and site.author %}
+<div class="author-card">
+  <div class="row align-items-center">
+    {% if site.author.avatar %}
+    <div class="col-auto">
+      <img src="{{ site.author.avatar }}" alt="{{ site.author.name }}" class="author-avatar">
+    </div>
+    {% endif %}
+    <div class="col">
+      {% if site.author.name %}
+      <h5 class="mb-1">{{ site.author.name }}</h5>
+      {% endif %}
+      {% if site.author.location %}
+      <p class="text-muted mb-2">
+        <i class="fas fa-map-marker-alt"></i> {{ site.author.location }}
+      </p>
+      {% endif %}
+      {% if site.author.links %}
+      <div class="author-links">
+        {% for link in site.author.links %}
+        <a href="{{ link.url }}" title="{{ link.label }}" aria-label="{{ link.label }}">
+          <i class="{{ link.icon }}"></i>
+        </a>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endif %}

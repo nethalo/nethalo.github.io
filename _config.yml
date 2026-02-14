@@ -1,8 +1,4 @@
-remote_theme: dieghernan/chulapa
-
 # Find errors on this file with http://www.yamllint.com/
-
-# Chulapa docs: https://dieghernan.github.io/chulapa/docs/02-config
 
 # A. Site Settings /SEO options
 # Overall options for your site, would affect your site SEO
@@ -36,58 +32,17 @@ author:
 #    - url:  # Another link
 #      icon: # Anothet FontAwesome code
 
-fa_version: #default ["6"] Use 6 or 5
-fa_kit_code: # Your FontAwesome kit code. If not provided a free hosted version (slower) will be loaded:  https://fontawesome.com/ 
-fa_v4_support: #Bool Add FontAwesome 4 support 
 # Web tracking - Google services https://analytics.google.com/analytics/web/
 # gtag_id is the preferred option, see https://developers.google.com/analytics/devguides/collection/gtagjs/migration?hl=en
 # analytics provided for backwards compatibility
 gtag_id                 :  G-6MGB047ESJ
 analytics_id            :  
 
-# Search providers
-# Available free search engines:
-# - lunr https://lunrjs.com/ 
-# - algolia v4 https://www.algolia.com/ - needs further configuration
-# - google custom search engine https://cse.google.es/ 
+# Search
 search:
-  provider              : lunr #Select a provider for enable search: lunr, algolia, google
-  label                 :  #default ["Search"] Text on navbar when search is enabled 
-  landing_page          :  #default ["/search"] Link on navbar 
-  lunr_maxwords         :  #default [30] lunr only - May slow down your site build
-  algolia_logo          :  true #Displays algolia logo. Should be set to true if you are on a community plan, otherwise false.  
-
-google_cse_id: #Your cse id
-# This site uses jekyll-algolia plugin https://community.algolia.com/jekyll-algolia/
-# Recommended additional configuration provided, could be modified. Add your own parameters
-algolia:                                                                   
-  application_id        : 
-  index_name            : 
-  search_only_api_key   : 
-  files_to_exclude:         #Optional
-    - _layouts/*.html
-    - _includes/*.html
-  extensions_to_index:      #Optional
-    - html
-    - md
-  searchableAttributes:     #Optional                                                    
-    - title                                                                    
-    - headings                                                                 
-    - unordered(content)                                                       
-    - unordered(subtitle)                                                      
-    - unordered(categories)                                                    
-    - unordered(collection)                                                    
-    - unordered(tags) 
-  customRanking:            #Optional
-    - desc(include_on_search)
-    - desc(title)
-    - desc(content) 
-    - desc(subtitle)
-    
-comments:
-  provider: giscus        #Enable comments via Disqus, giscus or Cactus.chat
- # disqus_shortname: rendiment #Your site id : check your address https://{{ disqus.shortname }}.disqus.com/admin/
- # cactus_shortname: #Your site id as registered with Cactus.chat
+  provider: lunr
+  label: Search
+  landing_page: /search
   
 # B. Navigation
 # Configure your navbar and the footer of your site
@@ -131,7 +86,7 @@ footer:
       url   : https://github.com/nethalo # A link or email: https://twitter.com/jack, mail@example.com
     - label: "RSS"
       icon: "fa fa-rss"
-      url:  "./atom.xml"
+      url:  "/feed.xml"
   copyright: © Rendiment 2026 # default is © <year> <name> 
   
 # C. Theme Settings
@@ -139,25 +94,12 @@ footer:
 googlefonts:
   - url : 'https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap'
   - url : 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap'
- 
 
-# Theme and colors
-chulapa-skin: 
-  highlight     : dracula # default["default"]
-  skin         : lymcha # Optional predefined skins
-  autothemer    :  true # Bool: Use autotheming
-  vars          :    
-    primary     : "#ffbe98" #default ["#007bff"] - Bootstrap blue
-    background-image: url('https://rendiment.io/assets/img/gallery/a-flyer.jpeg')
-    font-family-base: "Inter"
-    font-weight-normal: "400"
-    
 # D. Jekyll Defaults and collections: see https://jekyllrb.com/
 
 # Blog pagination: on this site /blog/index.html. https://jekyllrb.com/docs/pagination/
 paginate: 4
 paginate_path: "/blog/page:num/"
-paginator_maxnum: 3  #default[3] Custom: max of number to be displayed on the paginator
 
 # Collections https://jekyllrb.com/docs/step-by-step/09-collections/
 #collections:
@@ -176,8 +118,6 @@ defaults:
     values:
       layout: "default"
       include_on_search   : false
-      cloudtag_url        : /tags #This is where the link on tags would redirect
-      cloudcategory_url   : /categories #This is where the link on categories would redirect
   -
     scope:
       path: ""
@@ -225,8 +165,8 @@ compress_html:
 plugins:
   - jekyll-github-metadata
   - jekyll-paginate
-  - jekyll-include-cache
   - jekyll-sitemap
+  - jekyll-feed
 
 
 # Exclude these files from production site

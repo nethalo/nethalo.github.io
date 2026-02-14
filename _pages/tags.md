@@ -1,6 +1,6 @@
 ---
-layout: cloudtag
+layout: tags
 title: Tags
+subtitle: Browse posts by tag
 permalink: /tags
-show_breadcrumb   : true
 ---

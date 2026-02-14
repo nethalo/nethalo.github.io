@@ -1,0 +1,27 @@
+{% if page.show_related and site.related_posts.size > 0 %}
+<div class="related-posts">
+  <h3 class="mb-4">Related Posts</h3>
+  <div class="row g-4">
+    {% for post in site.related_posts limit:3 %}
+    <div class="col-md-4">
+      <div class="card h-100">
+        {% if post.header_img %}
+        <img src="{{ post.header_img | relative_url }}" class="card-img-top" alt="{{ post.title }}">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">
+            <a href="{{ post.url | relative_url }}" class="text-decoration-none">{{ post.title }}</a>
+          </h5>
+          {% if post.subtitle %}
+          <p class="card-text">{{ post.subtitle }}</p>
+          {% elsif post.excerpt %}
+          <p class="card-text">{{ post.excerpt | strip_html | truncate: 100 }}</p>
+          {% endif %}
+          <small class="text-muted">{{ post.date | date: "%B %d, %Y" }}</small>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}

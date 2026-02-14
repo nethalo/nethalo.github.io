@@ -1,0 +1,24 @@
+// CSS Custom Properties
+:root {
+  // Primary brand color
+  --primary-color: #ffbe98;
+  --primary-color-dark: #ff9f6e;
+  --primary-color-light: #ffd4b8;
+
+  // Typography
+  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  // Spacing
+  --section-spacing: 3rem;
+  --card-spacing: 1.5rem;
+
+  // Header
+  --header-height: 400px;
+  --header-height-mobile: 250px;
+
+  // Footer
+  --footer-bg: #f8f9fa;
+}
+
+// Bootstrap variable overrides (loaded before Bootstrap CDN)
+$primary: #ffbe98;

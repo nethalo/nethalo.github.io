@@ -1,0 +1,29 @@
+---
+layout: base
+---
+<div class="container my-5">
+  <header class="mb-5">
+    <h1 class="display-4">{{ page.title }}</h1>
+    {% if page.subtitle %}
+    <p class="lead text-muted">{{ page.subtitle }}</p>
+    {% endif %}
+  </header>
+
+  <div class="search-container">
+    <div class="input-group mb-4">
+      <input type="text" id="search-input" class="form-control form-control-lg" placeholder="Search posts..." autofocus>
+      <button class="btn btn-primary" type="button" id="search-button">
+        <i class="fas fa-search"></i> Search
+      </button>
+    </div>
+
+    <div id="search-results" class="search-results">
+      <!-- Results will be inserted here by JavaScript -->
+    </div>
+  </div>
+</div>
+
+<!-- Lunr.js -->
+<script src="https://unpkg.com/lunr@2.3.9/lunr.js"></script>
+<!-- Custom search script -->
+<script src="{{ '/assets/js/search.js' | relative_url }}"></script>

@@ -1,0 +1,19 @@
+---
+layout: null
+---
+[
+  {% for post in site.posts %}
+    {% if post.include_on_search %}
+    {
+      "id": {{ forloop.index0 }},
+      "title": {{ post.title | jsonify }},
+      "subtitle": {{ post.subtitle | jsonify }},
+      "url": {{ post.url | relative_url | jsonify }},
+      "date": {{ post.date | date: "%B %d, %Y" | jsonify }},
+      "categories": {{ post.categories | jsonify }},
+      "tags": {{ post.tags | jsonify }},
+      "content": {{ post.content | strip_html | normalize_whitespace | jsonify }}
+    }{% unless forloop.last %},{% endunless %}
+    {% endif %}
+  {% endfor %}
+]

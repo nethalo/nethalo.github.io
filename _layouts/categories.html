@@ -1,0 +1,43 @@
+---
+layout: base
+---
+<div class="container my-5">
+  <header class="mb-5">
+    <h1 class="display-4">{{ page.title }}</h1>
+    {% if page.subtitle %}
+    <p class="lead text-muted">{{ page.subtitle }}</p>
+    {% endif %}
+  </header>
+
+  <!-- Category Cloud -->
+  <div class="category-cloud mb-5 text-center">
+    {% assign sorted_categories = site.categories | sort %}
+    {% for category in sorted_categories %}
+      {% assign category_name = category[0] %}
+      {% assign category_posts = category[1] %}
+      <a href="#{{ category_name | slugify }}" class="badge bg-primary text-decoration-none">
+        {{ category_name }} <span class="badge bg-light text-dark">{{ category_posts.size }}</span>
+      </a>
+    {% endfor %}
+  </div>
+
+  <!-- Posts by Category -->
+  {% for category in sorted_categories %}
+    {% assign category_name = category[0] %}
+    {% assign category_posts = category[1] | sort: 'date' | reverse %}
+    <div class="mb-5" id="{{ category_name | slugify }}">
+      <h2 class="mb-3">
+        <i class="fas fa-folder"></i> {{ category_name }}
+        <span class="badge bg-primary">{{ category_posts.size }}</span>
+      </h2>
+      <ul class="post-list">
+        {% for post in category_posts %}
+        <li>
+          <span class="post-date">{{ post.date | date: "%b %d, %Y" }}</span>
+          <a href="{{ post.url | relative_url }}" class="post-title">{{ post.title }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endfor %}
+</div>

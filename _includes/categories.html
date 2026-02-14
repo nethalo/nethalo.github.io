@@ -1,0 +1,8 @@
+{% if page.show_categories and page.categories.size > 0 %}
+<div class="post-categories mb-3">
+  <i class="fas fa-folder"></i>
+  {% for category in page.categories %}
+  <a href="{{ '/categories' | relative_url }}#{{ category | slugify }}" class="badge bg-primary text-decoration-none">{{ category }}</a>
+  {% endfor %}
+</div>
+{% endif %}

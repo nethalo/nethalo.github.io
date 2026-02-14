@@ -1,12 +1,7 @@
 ---
 layout: minimal
 title: "Home"
-categories: [demo,layout]
 og_img: /assets/img/gallery/a-minimalist-logo.jpeg
-show_sociallinks  : true
-show_tags         : true
-show_categories   : true
-show_bottomnavs   : true
 ---
 <div style="
         width: 100%;

@@ -1,6 +1,6 @@
 ---
-layout: cloudcategory
+layout: categories
 title: Categories
+subtitle: Browse posts by category
 permalink: /categories
-show_breadcrumb   : true
 ---

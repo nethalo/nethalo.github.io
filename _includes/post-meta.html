@@ -8,7 +8,8 @@
   {% endif %}
   {% if page.content %}
   {% assign words = page.content | number_of_words %}
-  {% assign reading_time = words | divided_by: site.words_per_minute | default: 200 | at_least: 1 %}
+  {% assign wpm = site.words_per_minute | default: 200 %}
+  {% assign reading_time = words | divided_by: wpm | at_least: 1 %}
   <span class="reading-time ms-3">
     <i class="far fa-clock"></i>
     {{ reading_time }} min read

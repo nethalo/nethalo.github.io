@@ -33,7 +33,7 @@ dbsafe is a command-line tool that connects to your MySQL server, analyzes your 
 
 ![dbsafe plan output showing INSTANT algorithm and SAFE risk level](/assets/img/gallery/dbsafe-output-safe.png)
 
-<details>
+<details markdown="1">
 <summary>View code</summary>
 
 ```bash
@@ -62,7 +62,7 @@ Here's what makes schema changes tricky: similar-looking statements can behave c
 
 ![Comparison of safe ADD COLUMN vs dangerous MODIFY COLUMN operations](/assets/img/gallery/dbsafe-safe-vs-dangerous.png)
 
-<details>
+<details markdown="1">
 <summary>View code</summary>
 
 **Adding a column at the end (SAFE):**
@@ -107,7 +107,7 @@ If you're running Percona XtraDB Cluster, dbsafe detects it and adjusts its anal
 
 ![dbsafe topology detection for Percona XtraDB Cluster](/assets/img/gallery/dbsafe-topology-pxc.png)
 
-<details>
+<details markdown="1">
 <summary>View code</summary>
 
 ```bash
@@ -146,7 +146,7 @@ dbsafe also analyzes DELETE and UPDATE statements:
 
 ![DML analysis showing chunked DELETE script generation](/assets/img/gallery/dbsafe-dml-analysis.png)
 
-<details>
+<details markdown="1">
 <summary>View code</summary>
 
 ```bash
@@ -181,7 +181,7 @@ It uses [`EXPLAIN`](https://dev.mysql.com/doc/refman/8.0/en/explain.html) to est
 
 ![Version comparison between MySQL 8.0.11 and 8.0.29+ INSTANT DDL support](/assets/img/gallery/dbsafe-version-comparison.png)
 
-<details>
+<details markdown="1">
 <summary>View code</summary>
 
 **On MySQL 8.0.11:**

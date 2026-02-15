@@ -1,2 +1,89 @@
-bundler: command not found: rougify
-Install missing gem executables with `bundle install`
+// Dracula syntax highlighting theme
+// Based on https://draculatheme.com/
+
+.highlight {
+  background-color: #282a36;
+  color: #f8f8f2;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+
+  pre {
+    margin: 0;
+    background-color: transparent;
+  }
+
+  code {
+    background-color: transparent;
+    color: #f8f8f2;
+  }
+
+  // Comments
+  .c, .cm, .cp, .c1, .cs { color: #6272a4; font-style: italic; }
+
+  // Errors
+  .err { color: #f8f8f2; background-color: #ff5555; }
+
+  // Keywords
+  .k, .kc, .kd, .kn, .kp, .kr, .kt { color: #ff79c6; }
+
+  // Operators
+  .o, .ow { color: #ff79c6; }
+
+  // Punctuation
+  .p { color: #f8f8f2; }
+
+  // Names
+  .n, .nb, .nc, .no, .ni { color: #f8f8f2; }
+  .nd, .ne, .nf, .nl, .nn { color: #50fa7b; }
+  .nx { color: #f8f8f2; }
+  .py { color: #f8f8f2; }
+  .nt { color: #ff79c6; }
+  .nv, .vc, .vg, .vi { color: #8be9fd; }
+
+  // Strings
+  .s, .sb, .sc, .sd, .s2, .se, .sh, .si, .sx, .sr, .s1, .ss { color: #f1fa8c; }
+
+  // Numbers
+  .m, .mf, .mh, .mi, .il, .mo, .mb, .mx { color: #bd93f9; }
+
+  // Generics
+  .gd { color: #ff5555; }
+  .ge { font-style: italic; }
+  .gr { color: #ff5555; }
+  .gh { color: #f8f8f2; font-weight: bold; }
+  .gi { color: #50fa7b; }
+  .go { color: #6272a4; }
+  .gp { color: #f8f8f2; }
+  .gs { font-weight: bold; }
+  .gu { color: #f8f8f2; font-weight: bold; }
+  .gt { color: #ff5555; }
+
+  // Language specific
+  .language-bash .nb { color: #50fa7b; }
+  .language-shell .nb { color: #50fa7b; }
+}
+
+// Inline code
+code.highlighter-rouge {
+  background-color: #282a36;
+  color: #f1fa8c;
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  font-size: 0.9em;
+}
+
+// Code blocks without highlighting
+pre.highlight {
+  background-color: #282a36;
+  color: #f8f8f2;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  overflow-x: auto;
+
+  code {
+    background-color: transparent;
+    padding: 0;
+  }
+}

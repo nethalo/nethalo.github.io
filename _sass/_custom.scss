@@ -246,3 +246,57 @@ footer {
     }
   }
 }
+
+// Collapsible code blocks
+details {
+  margin: 1.5rem 0;
+  border: 1px solid #44475a;
+  border-radius: 0.375rem;
+  background-color: #282a36;
+  overflow: hidden;
+
+  summary {
+    cursor: pointer;
+    padding: 0.75rem 1rem;
+    background-color: #44475a;
+    color: #f8f8f2;
+    font-weight: 500;
+    user-select: none;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #6272a4;
+    }
+
+    &::marker {
+      color: #bd93f9;
+    }
+
+    &::-webkit-details-marker {
+      color: #bd93f9;
+    }
+  }
+
+  &[open] summary {
+    border-bottom: 1px solid #44475a;
+    margin-bottom: 0;
+  }
+
+  // Code blocks inside details
+  div.highlighter-rouge,
+  figure.highlight {
+    margin: 0;
+    border-radius: 0;
+
+    pre {
+      margin: 0;
+      border-radius: 0;
+    }
+  }
+
+  // Plain code blocks
+  pre {
+    margin: 0;
+    border-radius: 0;
+  }
+}

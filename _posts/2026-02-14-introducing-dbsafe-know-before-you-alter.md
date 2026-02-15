@@ -21,7 +21,7 @@ When planning a schema change, these are the questions you need answered:
 - Will it work differently on MySQL 8.0.12 vs 8.0.29?
 - What about my Galera cluster? Will it block all nodes in TOI mode?
 - Can I roll it back if something goes wrong?
-- Should I use [gh-ost](https://github.com/github/gh-ost) or pt-online-schema-change instead?
+- Should I use [gh-ost](https://github.com/github/gh-ost) or [pt-online-schema-change](https://docs.percona.com/percona-toolkit/pt-online-schema-change.html) instead?
 
 You can test on staging, but staging never has production-scale data. You can read the documentation, but you still need to mentally map your MySQL version, your table structure, and your specific ALTER syntax to figure out what will happen.
 
@@ -29,30 +29,9 @@ There should be a tool that just tells you.
 
 ## Enter dbsafe
 
-dbsafe is a command-line tool that connects to your MySQL server, analyzes your DDL or DML statement without running it, and tells you exactly what will happen.
+[dbsafe](https://github.com/nethalo/dbsafe) is a command-line tool that connects to your MySQL server, analyzes your DDL or DML statement without running it, and tells you exactly what will happen.
 
 ![dbsafe plan output showing INSTANT algorithm and SAFE risk level](/assets/img/gallery/dbsafe-output-safe.png)
-
-<details markdown="1">
-<summary>View code</summary>
-
-```bash
-dbsafe plan "ALTER TABLE users ADD COLUMN email VARCHAR(255)"
-```
-
-```
-Algorithm: INSTANT
-Locking: NONE
-Risk Level: SAFE
-Estimated Time: < 1 second
-Table Rebuild: No
-Recommended: Native MySQL (no tools needed)
-
-Rollback Plan:
-  ALTER TABLE users DROP COLUMN email;
-```
-
-</details>
 
 It's read-only analysis. It doesn't modify anything. It just tells you what MySQL would do if you ran that statement.
 
@@ -62,43 +41,6 @@ Here's what makes schema changes tricky: similar-looking statements can behave c
 
 ![Comparison of safe ADD COLUMN vs dangerous MODIFY COLUMN operations](/assets/img/gallery/dbsafe-safe-vs-dangerous.png)
 
-<details markdown="1">
-<summary>View code</summary>
-
-**Adding a column at the end (SAFE):**
-
-```bash
-dbsafe plan "ALTER TABLE users ADD COLUMN phone VARCHAR(20)"
-```
-
-```
-Algorithm: INSTANT
-Locking: NONE
-Risk: SAFE
-Execution: < 1 second
-
-This operation can run on production right now.
-```
-
-**Modifying a column's type (DANGEROUS):**
-
-```bash
-dbsafe plan "ALTER TABLE users MODIFY COLUMN name VARCHAR(200)"
-```
-
-```
-Algorithm: COPY
-Locking: EXCLUSIVE
-Risk: DANGEROUS
-Execution: ~15 minutes (estimated for 50M rows)
-Table will be completely locked during operation
-
-Recommended: Use gh-ost or pt-online-schema-change
-Estimated gh-ost time: 25 minutes (zero downtime)
-```
-
-</details>
-
 The first one is instant, no locks, safe for production. The second one rebuilds the entire table with an exclusive lock ([COPY algorithm](https://dev.mysql.com/doc/refman/8.0/en/alter-table.html) creates a new table and copies all rows). You need to know which is which before you run it.
 
 ## Topology Detection
@@ -106,28 +48,6 @@ The first one is instant, no locks, safe for production. The second one rebuilds
 If you're running Percona XtraDB Cluster, dbsafe detects it and adjusts its analysis:
 
 ![dbsafe topology detection for Percona XtraDB Cluster](/assets/img/gallery/dbsafe-topology-pxc.png)
-
-<details markdown="1">
-<summary>View code</summary>
-
-```bash
-dbsafe connect
-```
-
-```
-Topology: Percona XtraDB Cluster
-Cluster Size: 3 nodes (from wsrep_cluster_size)
-Node State: Synced (from wsrep_local_state_comment)
-wsrep_OSU_method: TOI
-
-WARNING: DDL in TOI mode will block ALL cluster nodes
-A 10-minute ALTER locks all 3 nodes for 10 minutes
-
-Recommendation: Use pt-online-schema-change for large tables
-Or switch to RSU (Rolling Schema Upgrade) method for this operation
-```
-
-</details>
 
 *In TOI mode, [DDL locks the entire cluster for the duration of the operation](https://docs.percona.com/percona-xtradb-cluster/8.0/toi.html) - all nodes are blocked from accepting writes. Cluster detection uses [wsrep status variables](https://docs.percona.com/percona-xtradb-cluster/8.0/wsrep-status-index.html). For large tables, use [pt-online-schema-change](https://docs.percona.com/percona-toolkit/pt-online-schema-change.html) or [RSU method](https://docs.percona.com/percona-xtradb-cluster/8.0/rsu.html).*
 
@@ -146,33 +66,6 @@ dbsafe also analyzes DELETE and UPDATE statements:
 
 ![DML analysis showing chunked DELETE script generation](/assets/img/gallery/dbsafe-dml-analysis.png)
 
-<details markdown="1">
-<summary>View code</summary>
-
-```bash
-dbsafe plan "DELETE FROM orders WHERE created_at < '2023-01-01'"
-```
-
-```
-Estimated Affected Rows: ~1.2M (45% of table)
-Table Size: 2.4GB
-Risk: CAUTION - Large bulk operation
-Table has 2 triggers (will fire for each row)
-Replication lag impact: HIGH
-
-Generated chunked execution script:
-  /tmp/dbsafe-chunked-delete-20260215-153022.sh
-
-Script will:
-  - Delete in 1000-row chunks
-  - Add 2-second delay between chunks
-  - Track progress
-  - Allow safe stop/resume
-  - Estimated total time: ~15 minutes
-```
-
-</details>
-
 It uses [`EXPLAIN`](https://dev.mysql.com/doc/refman/8.0/en/explain.html) to estimate affected rows, checks for triggers, and generates a chunked execution script for large operations. The script uses `LIMIT` with `SLEEP()` between batches to avoid replication lag and long-running transactions.
 
 ## Version-Specific Features
@@ -180,37 +73,6 @@ It uses [`EXPLAIN`](https://dev.mysql.com/doc/refman/8.0/en/explain.html) to est
 [MySQL 8.0.12 introduced INSTANT ADD COLUMN](https://dev.mysql.com/blog-archive/mysql-8-0-innodb-now-supports-instant-add-column/) for trailing positions. [MySQL 8.0.29 extended it to any position and added INSTANT DROP COLUMN](https://dev.mysql.com/blog-archive/mysql-8-0-instant-add-and-drop-columns/). dbsafe detects your MySQL version and tells you what's supported.
 
 ![Version comparison between MySQL 8.0.11 and 8.0.29+ INSTANT DDL support](/assets/img/gallery/dbsafe-version-comparison.png)
-
-<details markdown="1">
-<summary>View code</summary>
-
-**On MySQL 8.0.11:**
-
-```bash
-dbsafe plan "ALTER TABLE users ADD COLUMN bio TEXT"
-```
-
-```
-Algorithm: INPLACE (INSTANT not available in MySQL 8.0.11)
-Requires table rebuild
-Consider upgrading to MySQL 8.0.12+ for INSTANT DDL support
-```
-
-*Reference: [Online DDL Operations - MySQL 8.0](https://dev.mysql.com/doc/refman/8.0/en/innodb-online-ddl-operations.html)*
-
-**On MySQL 8.0.29+:**
-
-```bash
-dbsafe plan "ALTER TABLE users ADD COLUMN bio TEXT AFTER name"
-```
-
-```
-Algorithm: INSTANT (any position supported in 8.0.29+)
-Locking: NONE
-Risk: SAFE
-```
-
-</details>
 
 Same statement, different behavior depending on version. You need to know what your specific MySQL version supports.
 
@@ -244,12 +106,12 @@ Same statement, different behavior depending on version. You need to know what y
 
 ```bash
 # Linux x86_64
-VERSION=0.1.2
+VERSION=0.2.0
 curl -L https://github.com/nethalo/dbsafe/releases/download/v${VERSION}/dbsafe_${VERSION}_linux_amd64.tar.gz | tar xz
 sudo mv dbsafe /usr/local/bin/
 
 # macOS Apple Silicon
-VERSION=0.1.2
+VERSION=0.2.0
 curl -L https://github.com/nethalo/dbsafe/releases/download/v${VERSION}/dbsafe_${VERSION}_darwin_arm64.tar.gz | tar xz
 sudo mv dbsafe /usr/local/bin/
 
@@ -375,19 +237,6 @@ Then run analysis using the default connection:
 dbsafe plan "ALTER TABLE users ADD COLUMN region VARCHAR(50)"
 ```
 
-## What's Next
-
-This is the first post in a series on safe MySQL schema changes. Upcoming topics:
-
-1. INSTANT DDL operations - MySQL 8.0.12 vs 8.0.29 feature differences
-2. INPLACE operations - when MySQL rebuilds indexes without copying the table
-3. COPY algorithm - why some operations require full table rebuild
-4. Managing schema changes in Galera/PXC clusters
-5. Safe bulk DELETE and UPDATE strategies
-6. Foreign key impact on DDL performance
-7. Trigger warnings for DML operations
-8. CI/CD integration patterns
-
 ## Links
 
 - [GitHub Repository](https://github.com/nethalo/dbsafe)
@@ -426,6 +275,4 @@ This is the first post in a series on safe MySQL schema changes. Upcoming topics
 - [gh-ost - GitHub's Online Schema Migration Tool](https://github.com/github/gh-ost)
 - [Vitess sqlparser](https://github.com/vitessio/vitess/tree/main/go/vt/sqlparser)
 
----
 
-*Next: [Understanding INSTANT DDL Operations in MySQL 8.0+](#)*

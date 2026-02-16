@@ -55,6 +55,9 @@ If you're running Percona XtraDB Cluster, dbsafe detects it and adjusts its anal
 The same ALTER that's safe on standalone MySQL can block your entire cluster for minutes in [TOI (Total Order Isolation) mode](https://docs.percona.com/percona-xtradb-cluster/8.0/toi.html). dbsafe detects:
 
 - Galera/PXC clusters ([wsrep status variables](https://docs.percona.com/percona-xtradb-cluster/8.0/wsrep-status-index.html))
+
+> **Related:** For load-testing PXC clusters with ProxySQL read/write split, see [How to Test ProxySQL Read/Write Split with sysbench](/mysql/proxysql/2026/02/03/sysbench-proxysql.html).
+
 - MySQL Group Replication ([performance_schema.replication_group_members](https://dev.mysql.com/doc/refman/8.0/en/performance-schema-replication-group-members-table.html))
 - Async replication topologies ([SHOW REPLICA STATUS](https://dev.mysql.com/doc/refman/8.0/en/show-replica-status.html))
 - Semi-sync replication

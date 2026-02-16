@@ -150,4 +150,8 @@ If contention issues persist, consider:
 
 Remember to test thoroughly before implementing any changes in a production environment.
 
+---
+
+**Monitoring contention in real-time:** For continuous profiling and FlameGraph-based bottleneck detection, see [Monitoring MySQL with Coroot](/mysql/monitoring/2024/09/05/coroot-mysql-first-test.html).
+
 

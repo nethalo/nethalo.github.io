@@ -10,7 +10,9 @@ header_img: /assets/img/gallery/a-graphical-dashboard-that-shows.png
 
 # First part: A new graphical interface
 
-Arguably the best feature from Percona's PMM is QAN. A lot of users install PMM mostly because that particular module. It is also the one piece that is hard to customize. My understanding is that is a react plugin or a grafana plugin. 
+Arguably the best feature from Percona's PMM is QAN. A lot of users install PMM mostly because that particular module. It is also the one piece that is hard to customize. My understanding is that is a react plugin or a grafana plugin.
+
+> **Alternative approach:** For a different take on MySQL monitoring with automatic eBPF-based discovery and continuous profiling, see [Monitoring MySQL with Coroot](/mysql/monitoring/2024/09/05/coroot-mysql-first-test.html).
 
 That is a shame, because the data that PMM stores in ClickHouse is a gold mine of query information. One could say "but you can use Grafana, since there is a datasource for ClickHouse". True, but also not that flexible. 
 

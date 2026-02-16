@@ -127,3 +127,10 @@ There are situations where it doesn't matter if one is using dynamic thresholds,
 Those are good examples of proven value of static thresholds.
 
 Happy Alerting!
+
+---
+
+### Further Reading on MySQL/PostgreSQL Monitoring
+
+- **Continuous profiling:** [Monitoring MySQL with Coroot](/mysql/monitoring/2024/09/05/coroot-mysql-first-test.html) - eBPF-based observability with FlameGraphs
+- **Query analytics:** [Supercharge PMM Query Analytics with Redash](/mysql/postgresql/pmm/percona/monitoring/2024/09/19/pmm-query-analytics-clickhouse.html) - Custom dashboards beyond Grafana

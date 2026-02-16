@@ -16,6 +16,8 @@ This post explains why sysbench doesn't work out-of-the-box with ProxySQL read/w
 
 Three-node PXC cluster behind ProxySQL with Galera-aware hostgroups:
 
+> **Related:** Before making schema changes to PXC clusters, use [dbsafe](/mysql/tools/2026/02/14/introducing-dbsafe-know-before-you-alter.html) to understand TOI blocking behavior and cluster-wide DDL impact.
+
 - **Hostgroup 1**: Writer (single node)
 - **Hostgroup 2**: Readers (backup writers promoted by `writer_is_also_reader=2`)
 - **Hostgroup 3**: Backup writers
@@ -37,6 +39,8 @@ FROM runtime_mysql_query_rules;
 ```
 
 Rules look correct. Let's run sysbench and check where queries land:
+
+> **Tip:** If you're looking for continuous profiling and query monitoring during sysbench runs, check out [Monitoring MySQL with Coroot](/mysql/monitoring/2024/09/05/coroot-mysql-first-test.html) for eBPF-based observability.
 
 ```bash
 sysbench --db-driver=mysql \

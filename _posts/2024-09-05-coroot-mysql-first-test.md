@@ -17,6 +17,8 @@ So i just spinned a VM, installed docker and started to work. First was installi
 
 Next, the actual MySQL. Since i was already using docker, i went with the Percona Server for MySQL docker image. Also pretty simple. Once the contaner was running, i added artificial load with sysbench. And then the "magic".
 
+> **Related:** For advanced sysbench configuration with ProxySQL and PXC, see [How to Test ProxySQL Read/Write Split with sysbench](/mysql/proxysql/2026/02/03/sysbench-proxysql.html)
+
 ![health_overview](/assets/img/gallery/health_overview.png)
 
 The node agent detected that there was a MySQL instance running. I didn't have to do anything to add it to the monitoring. I did had to create a mysql user for coroot to connect thoug. 
@@ -97,7 +99,9 @@ As i've mentioned earlier, i used Sysbench to create artificial traffic, but als
 
 # Finding Bottlenecks
 
-Based purely on the FlameGraph
+Based purely on the FlameGraph, I identified bottlenecks in binlog sync and InnoDB log flushing.
+
+> **Deep dive:** For debugging InnoDB-specific contention using semaphores and source code analysis, see [Contention in MySQL InnoDB](/mysql/innodb/2024/09/01/innodb-semaphore-contention.html).
 
 ## Binlogs
 
@@ -201,3 +205,5 @@ The time spent on flushing improved in 50%! that's a lot. Pretty good for not ha
 I will wrap it out here for the moment. There are more things to test, like replication monitoring or the alerting module, but that will be for a next blog.
 
 In conclusion: Coroot have a massive potential and i'm sure that if they manage to figure out adoption, it will be a favorite between DBAs, specially on more complex deployments like Kubernetes Operators.
+
+> **Related:** For deep query analytics with custom dashboards beyond Grafana's limitations, see [Supercharge PMM Query Analytics: Using Redash to Optimize Database Performance](/mysql/postgresql/pmm/percona/monitoring/2024/09/19/pmm-query-analytics-clickhouse.html).

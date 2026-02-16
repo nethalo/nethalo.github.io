@@ -409,3 +409,25 @@ Add robots meta tag support in `_layouts/base.html`:
 - Respects user accessibility preferences
 - Staggered child animations with CSS nth-child delays
 - Fires once per element (not on every scroll frame)
+
+### HTML Compression and Empty Elements
+
+**Problem**: Hero header images displayed on `localhost:4000` but were invisible on production (GitHub Pages). Jekyll's `compress.html` layout (configured with `clippings: all`) strips elements that appear empty during HTML compression.
+
+**Root Cause**: The `<div class="header-image">` element had no inner content—it relied entirely on CSS `background-image` and `height` properties. The compressor treated it as empty whitespace and removed it.
+
+**Solution**: Add visually-hidden content inside the div to prevent removal:
+```html
+<div class="header-image" style="background-image: url('...');">
+  <span class="visually-hidden">Header image for {{ page.title }}</span>
+</div>
+```
+
+**Why it works**:
+- The div now has non-whitespace content, so the compressor preserves it
+- `visually-hidden` (Bootstrap 5) hides the text visually but keeps it accessible to screen readers
+- Bonus: improves accessibility by providing context to screen reader users
+
+**File**: `_includes/header-image.html`
+
+**Lesson**: When using aggressive HTML compression (`clippings: all`), decorative elements that rely purely on CSS styling need non-whitespace content to survive compression. Always test on GitHub Pages before assuming localhost behavior matches production.

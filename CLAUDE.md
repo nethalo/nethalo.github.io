@@ -63,13 +63,36 @@ Blog posts must follow this format:
 ```yaml
 ---
 title: "Post Title"
-subtitle: Short description for SEO
+subtitle: Short description for on-page display
+description: SEO-optimized meta description (150-160 characters, keyword-rich, compelling)
 categories: [mysql, postgresql]
 tags: [performance, monitoring, tools]
 header_type: image  # or "hero", "post"
 header_img: /assets/img/gallery/image-name.jpg
 ---
 ```
+
+### Required Fields for SEO
+
+**IMPORTANT:** All new posts MUST include these fields:
+
+1. **`description`** (required) - SEO meta description
+   - Length: 150-160 characters (Google's display limit)
+   - Include primary keywords naturally
+   - Make it compelling - this appears in search results
+   - Different from `subtitle` (subtitle is for on-page display)
+   - Example: `"Learn how to identify MySQL InnoDB contention points using the SEMAPHORES section in SHOW ENGINE INNODB STATUS for high-concurrency environments."`
+
+2. **`subtitle`** (optional) - Shown on the page under the title
+   - Can be creative/catchy
+   - Example: `"Useful info from the semaphores section"`
+
+3. **`header_img`** (recommended) - Header image
+   - Place images in `/assets/img/gallery/`
+   - **MUST be optimized before committing** (see Image Optimization section below)
+   - Max width: 1600px
+   - JPEGs at 85% quality
+   - File size target: <400KB
 
 ### Front Matter Defaults
 Posts automatically inherit these settings from `_config.yml`:
@@ -80,6 +103,51 @@ Posts automatically inherit these settings from `_config.yml`:
 - Breadcrumb navigation
 - Author information
 - Search indexing enabled
+- **JSON-LD Article schema** (automatic for all posts with dates)
+
+### SEO Best Practices for New Posts
+
+When creating a new post, follow these guidelines:
+
+**1. Meta Description**
+- Always include a `description` field (separate from `subtitle`)
+- Write for humans first, optimize for keywords second
+- Include primary keyword within first 120 characters
+- End with a call-to-action or value proposition
+
+**2. Internal Linking**
+- Link to at least 2-3 related posts within the content
+- Use contextual anchor text (not "click here")
+- Place links where they add value for readers
+- Topic clusters: MySQL monitoring posts should link to each other
+
+**3. Image Optimization**
+- All images MUST be optimized before committing
+- Use `sips` (macOS) to resize and compress:
+  ```bash
+  # Resize JPEG to 1600px width, 85% quality
+  sips --resampleWidth 1600 --setProperty formatOptions 85 image.jpg
+
+  # Resize PNG to 1600px width
+  sips --resampleWidth 1600 image.png
+  ```
+- Target file sizes:
+  - Header images: <400KB
+  - Content screenshots: <300KB
+  - Diagrams/charts: <200KB
+
+**4. Categories and Tags**
+- Use existing categories when possible (mysql, postgresql, monitoring, tools)
+- Tags should be specific and relevant
+- Limit to 3-6 tags per post
+- Categories create taxonomy, tags are for discovery
+
+**5. Content Structure**
+- Use H2 (`##`) for main sections
+- Use H3 (`###`) for subsections
+- Include code examples where relevant
+- Add a conclusion or summary section
+- Consider adding a "Further Reading" section with internal links
 
 ## Configuration Files
 
@@ -105,7 +173,16 @@ Dependencies managed via Bundler:
 ### Images
 - Place images in `assets/img/gallery/`
 - Reference in posts as `/assets/img/gallery/image-name.jpg`
+- **MUST be optimized before committing** (max 1600px width, <400KB for headers)
 - Header images should be high quality and relevant to post content
+- Use `sips` to optimize:
+  ```bash
+  # For JPEGs (photos, complex images)
+  sips --resampleWidth 1600 --setProperty formatOptions 85 image.jpg
+
+  # For PNGs (screenshots, diagrams)
+  sips --resampleWidth 1600 image.png
+  ```
 
 ### Markdown
 Uses kramdown processor with:
@@ -113,6 +190,61 @@ Uses kramdown processor with:
 - Syntax highlighting via rouge
 - Dracula highlight theme
 - Smart quotes enabled
+
+## SEO Infrastructure (Feb 2026)
+
+The site has comprehensive SEO infrastructure in place. **All new posts automatically benefit from:**
+
+### Automatic Features
+- ✅ **JSON-LD Article schema** - BlogPosting structured data included in `<head>` via `_includes/schema-article.html`
+  - Includes: headline, dates, author, publisher, description, image, categories, tags
+  - Only renders on posts with `layout: default` and `page.date`
+  - Eligible for Google rich results (author bylines, article badges)
+
+- ✅ **Open Graph tags** - Social media preview cards (Facebook, LinkedIn, Twitter)
+  - Uses `page.header_img` or `site.og_image` as fallback
+  - Title, description, and image automatically populated
+
+- ✅ **Canonical URLs** - Prevents duplicate content issues
+
+- ✅ **Sitemap generation** - `jekyll-sitemap` plugin creates `/sitemap.xml`
+
+- ✅ **robots.txt** - Properly configured with User-agent and Allow directives
+
+### Manual Requirements
+When creating a new post, YOU MUST:
+
+1. **Add `description` field** - 150-160 characters, keyword-rich
+2. **Optimize images** - Before committing, use `sips` to resize/compress
+3. **Add internal links** - Link to 2-3 related posts within content
+4. **Use proper categories** - Stick to existing: mysql, postgresql, monitoring, tools, proxysql
+
+### Topic Clusters (for internal linking)
+
+Link new posts to these established clusters:
+
+**MySQL Monitoring Cluster:**
+- [Contention in MySQL InnoDB](/mysql/innodb/2024/09/01/innodb-semaphore-contention.html)
+- [Monitoring MySQL with Coroot](/mysql/monitoring/2024/09/05/coroot-mysql-first-test.html)
+- [Smart Alerting: Dynamic Thresholds](/monitoring/prometheus/2024/09/10/smart-alerting-dynamic-thresholds.html)
+- [PMM Query Analytics with Redash](/mysql/postgresql/pmm/percona/monitoring/2024/09/19/pmm-query-analytics-clickhouse.html)
+
+**PXC/Galera Management Cluster:**
+- [Test ProxySQL Read/Write Split](/mysql/proxysql/2026/02/03/sysbench-proxysql.html)
+- [Introducing dbsafe](/mysql/tools/2026/02/14/introducing-dbsafe-know-before-you-alter.html)
+
+**PostgreSQL:**
+- [Fuzzy and Semantic Search in PostgreSQL](/postgresql/2026/01/21/pgtrgm-pgvector-music.html)
+
+### Pre-Commit Checklist
+
+Before committing a new post:
+- [ ] `description` field is 150-160 characters
+- [ ] Images are optimized (<400KB for headers, <300KB for content)
+- [ ] Added 2-3 internal links to related posts
+- [ ] Categories and tags are appropriate
+- [ ] Code examples are tested and accurate
+- [ ] Spell-checked and proofread
 
 ## Site Theme and Styling
 

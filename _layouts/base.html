@@ -61,6 +61,9 @@ layout: compress
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="{{ '/favicon.ico' | relative_url }}">
 
+  <!-- Structured Data (JSON-LD) -->
+  {% include schema-article.html %}
+
   <!-- Google Analytics -->
   {% if site.gtag_id %}
   <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.gtag_id }}"></script>

@@ -4,7 +4,7 @@ subtitle: First impressions
 description: Hands-on review of Coroot's eBPF-based MySQL monitoring. Automatic discovery, query analysis, and log patterns without complex instrumentation.
 categories: [mysql,monitoring]
 tags: [observability, mysql, coroot, monitoring]
-header_type: image
+header_type: hero
 header_img: /assets/img/gallery/a-flamegraph.png
 ---
 

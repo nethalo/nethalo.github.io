@@ -4,7 +4,7 @@ subtitle: Customize QAN, Analyze Query Performance, and Unlock ClickHouse Data w
 description: Access PMM's ClickHouse query data directly with Redash for custom analytics. Build flexible dashboards beyond Grafana's QAN limitations.
 categories: [mysql,postgresql,pmm,percona,monitoring]
 tags: [observability, mysql, postgresql, monitoring, redash]
-header_type: image
+header_type: hero
 header_img: /assets/img/gallery/a-graphical-dashboard-that-shows.png
 ---
 

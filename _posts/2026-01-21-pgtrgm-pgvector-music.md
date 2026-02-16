@@ -4,7 +4,7 @@ subtitle: The DBA's Guide to Music Matching - pg_trgm and pgvector with 100K Spo
 description: Master fuzzy search with pg_trgm and semantic search with pgvector in PostgreSQL. Match messy user input to clean catalog data using 114K Spotify tracks.
 categories: [postgresql]
 tags: [postgresql, pg_trgm, pgvector, embeddings, fuzzy-search, sentence-transformers]
-header_type: image
+header_type: hero
 header_img: /assets/img/gallery/record-store-small.jpg
 ---
 

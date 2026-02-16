@@ -4,7 +4,7 @@ subtitle: A tool that analyzes MySQL schema changes before you run them
 description: Analyze MySQL ALTER TABLE statements before running them. Know the algorithm, locks, and risks without testing on production. Read-only DDL safety tool.
 categories: [mysql, tools]
 tags: [mysql, ddl, schema-changes, dba, tools]
-header_type: image
+header_type: hero
 header_img: /assets/img/gallery/dbsafe-hero.jpg
 ---
 

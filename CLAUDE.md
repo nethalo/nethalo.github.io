@@ -67,7 +67,7 @@ subtitle: Short description for on-page display
 description: SEO-optimized meta description (150-160 characters, keyword-rich, compelling)
 categories: [mysql, postgresql]
 tags: [performance, monitoring, tools]
-header_type: image  # or "hero", "post"
+header_type: hero  # Hero image for prominent display
 header_img: /assets/img/gallery/image-name.jpg
 ---
 ```

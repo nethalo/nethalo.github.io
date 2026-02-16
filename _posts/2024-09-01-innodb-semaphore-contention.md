@@ -1,6 +1,7 @@
 ---
 title: Contention in MySQL InnoDB
 subtitle: Useful info from the semaphores section
+description: Learn how to identify MySQL InnoDB contention points using the SEMAPHORES section in SHOW ENGINE INNODB STATUS for high-concurrency environments.
 categories: [mysql,innodb]
 tags: [innodb, mysql, contention, semaphores]
 header_type: image

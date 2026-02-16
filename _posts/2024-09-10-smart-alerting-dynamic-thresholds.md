@@ -1,6 +1,7 @@
 ---
 title: "Smart Alerting: Dynamic Thresholds"
 subtitle: Combating Alert Fatigue
+description: Stop alert fatigue with dynamic thresholds in Prometheus and Grafana. Learn adaptive alerting that adjusts to patterns instead of static CPU limits.
 categories: [monitoring,prometheus]
 tags: [observability, grafana, monitoring, prometheus]
 header_type: image

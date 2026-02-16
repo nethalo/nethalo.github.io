@@ -1,6 +1,7 @@
 ---
 title: "How to Test ProxySQL Read/Write Split with sysbench"
 subtitle: Getting Accurate Results with Percona XtraDB Cluster
+description: Configure sysbench and ProxySQL correctly to test read/write split with PXC. Why default sysbench sends all queries to writers and how to fix it.
 categories: [mysql, proxysql]
 tags: [mysql, proxysql, pxc, galera, read-write-split, sysbench]
 header_type: image

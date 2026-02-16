@@ -60,6 +60,8 @@ navbar:
   nav:
   - title   : Blog # Label
     url     : /blog/ # url
+  - title   : About
+    url     : /about
   - title   : Archive
     url     : /archive
 #  - title   : Docs

@@ -59,17 +59,9 @@ navbar:
     img     :  # An small image, try 30x30px
   nav:
   - title   : Blog # Label
-    url     : /blog/ # url	
-#  - title   : Cheatsheets
-#    url     : /cheatsheets
-  - title   : Extras
-    child   :
-      - title : Tags
-        url   : /tags
-      - title : Categories
-        url   : /categories
-      - title : Archive
-        url   : /archive
+    url     : /blog/ # url
+  - title   : Archive
+    url     : /archive
 #  - title   : Docs
 #    url     : https://dieghernan.github.io/chulapa/docs/01-install
 #  - title   : # Label submenu
@@ -92,8 +84,7 @@ footer:
 # C. Theme Settings
 # Google Fonts https://fonts.google.com/, add as many as you need
 googlefonts:
-  - url : 'https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap'
-  - url : 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap'
+  - url : 'https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap'
 
 # D. Jekyll Defaults and collections: see https://jekyllrb.com/
 

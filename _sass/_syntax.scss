@@ -2,10 +2,11 @@
 // Based on https://draculatheme.com/
 
 .highlight {
-  background-color: #282a36;
+  background-color: #0e1421;
+  border: 1px solid #1e2435;
   color: #f8f8f2;
-  padding: 1rem;
-  border-radius: 0.375rem;
+  padding: 20px;
+  border-radius: 8px;
   overflow-x: auto;
   margin: 1rem 0;
 
@@ -67,7 +68,8 @@
 
 // Inline code
 code.highlighter-rouge {
-  background-color: #282a36;
+  background-color: #0e1421;
+  border: 1px solid #1e2435;
   color: #f1fa8c;
   padding: 0.2em 0.4em;
   border-radius: 0.25rem;
@@ -76,10 +78,11 @@ code.highlighter-rouge {
 
 // Code blocks without highlighting
 pre.highlight {
-  background-color: #282a36;
+  background-color: #0e1421;
+  border: 1px solid #1e2435;
   color: #f8f8f2;
-  padding: 1rem;
-  border-radius: 0.375rem;
+  padding: 20px;
+  border-radius: 8px;
   overflow-x: auto;
 
   code {

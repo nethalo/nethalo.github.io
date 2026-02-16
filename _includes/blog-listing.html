@@ -1,0 +1,48 @@
+{%- comment -%}
+  Blog listing section for homepage
+  Features: category filter pills, featured card (first post), 3 regular cards
+{%- endcomment -%}
+
+<section class="blog-listing-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">// LATEST POSTS</span>
+      <div class="section-title-row">
+        <h2 class="section-title">Recent Insights</h2>
+        <a href="{{ '/blog/' | relative_url }}" class="view-all-link">
+          View all posts <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+
+    {%- comment -%} Category filter pills {%- endcomment -%}
+    <div class="category-filters animate-on-scroll">
+      <button class="cat-btn active" data-category="all">All</button>
+      <button class="cat-btn" data-category="mysql">MySQL</button>
+      <button class="cat-btn" data-category="postgresql">PostgreSQL</button>
+      <button class="cat-btn" data-category="tools">Tools</button>
+    </div>
+
+    {%- comment -%} Get posts for display {%- endcomment -%}
+    {%- assign all_posts = site.posts | where_exp: "post", "post.include_on_feed != false" -%}
+    {%- assign first_post = all_posts.first -%}
+    {%- assign remaining_posts = all_posts | offset: 1 | limit: 3 -%}
+
+    {%- comment -%} Featured card (first post) {%- endcomment -%}
+    {% if first_post %}
+    <div class="featured-card-wrapper animate-on-scroll">
+      {% include featured-card.html post=first_post %}
+    </div>
+    {% endif %}
+
+    {%- comment -%} Regular post cards (next 3 posts, excluding the featured one) {%- endcomment -%}
+    <div class="post-cards-grid animate-on-scroll stagger-children">
+      {% for post in remaining_posts %}
+        {%- comment -%} Skip if this is the featured post (double-check) {%- endcomment -%}
+        {% if post.url != first_post.url %}
+          {% include post-card.html post=post %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>

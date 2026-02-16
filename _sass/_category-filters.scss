@@ -1,0 +1,52 @@
+// Category filter pills
+
+.category-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+  justify-content: center;
+
+  @media (min-width: 768px) {
+    justify-content: flex-start;
+  }
+}
+
+.cat-btn {
+  padding: 0.5rem 1.25rem;
+  background-color: white;
+  color: var(--text-secondary);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  white-space: nowrap;
+
+  &:hover {
+    background-color: var(--accent-green-bg);
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+  }
+
+  &.active {
+    background-color: var(--accent-green);
+    border-color: var(--accent-green);
+    color: white;
+    box-shadow: 0 2px 4px rgba(231, 73, 76, 0.2);
+
+    &:hover {
+      background-color: var(--accent-green-dark);
+      border-color: var(--accent-green-dark);
+      color: white;
+    }
+  }
+
+  // Focus state for accessibility
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(231, 73, 76, 0.2);
+  }
+}

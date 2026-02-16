@@ -1,0 +1,126 @@
+// Navbar with glassmorphism effect and gradient logo
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  min-height: var(--navbar-height);
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: var(--blur-glass);
+  -webkit-backdrop-filter: var(--blur-glass);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 0.75rem 0;
+
+  // Remove default Bootstrap box-shadow if any
+  &.navbar-light {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+}
+
+// Gradient "R" logo square
+.navbar-logo {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #f06366 0%, #d63539 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-weight: var(--font-bold);
+  font-size: 18px;
+  color: white;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+// Brand title next to logo
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-sans);
+  font-weight: var(--font-bold);
+  font-size: 18px;
+  color: var(--text-primary);
+  padding: 0;
+
+  &:hover {
+    color: var(--text-primary);
+  }
+}
+
+// Nav links
+.navbar-nav {
+  .nav-link {
+    font-family: var(--font-sans);
+    font-weight: var(--font-medium);
+    font-size: 14px;
+    color: var(--text-secondary);
+    padding: 0.5rem 1rem;
+    transition: color var(--transition-base);
+    position: relative;
+
+    &:hover {
+      color: var(--accent-green);
+    }
+
+    &.active {
+      color: var(--accent-green);
+      font-weight: var(--font-semibold);
+
+      // Optional: underline indicator
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 1rem;
+        right: 1rem;
+        height: 2px;
+        background-color: var(--accent-green);
+        border-radius: 2px;
+      }
+    }
+
+    // Search icon styling
+    i.fas {
+      margin-right: 0.25rem;
+    }
+  }
+}
+
+// Mobile hamburger button
+.navbar-toggler {
+  border: none;
+  padding: 0.5rem;
+
+  &:focus {
+    box-shadow: none;
+  }
+
+  .navbar-toggler-icon {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+// Mobile menu (collapsed)
+@media (max-width: 767px) {
+  .navbar-collapse {
+    background-color: rgba(255, 255, 255, 0.98);
+    backdrop-filter: var(--blur-glass);
+    -webkit-backdrop-filter: var(--blur-glass);
+    border-radius: var(--radius-md);
+    margin-top: 0.5rem;
+    padding: 0.5rem 0;
+    box-shadow: var(--shadow-md);
+
+    .nav-link {
+      padding: 0.75rem 1rem;
+
+      &.active::after {
+        display: none; // Hide underline on mobile
+      }
+    }
+  }
+}

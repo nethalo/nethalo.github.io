@@ -1,22 +1,16 @@
-<footer>
+<footer class="site-footer">
   <div class="container">
-    <div class="text-center">
-      {% if site.footer.links %}
-      <div class="footer-links mb-3">
-        {% for link in site.footer.links %}
-        <a href="{{ link.url | relative_url }}" title="{{ link.label }}" aria-label="{{ link.label }}">
-          <i class="{{ link.icon }}"></i>
-        </a>
-        {% endfor %}
-      </div>
+    <div class="footer-copyright">
+      {% if site.footer.copyright %}
+      {{ site.footer.copyright }}
+      {% else %}
+      &copy; {{ 'now' | date: '%Y' }} {{ site.author.name | default: site.title }}
       {% endif %}
-      <p class="text-muted mb-0">
-        {% if site.footer.copyright %}
-        {{ site.footer.copyright }}
-        {% else %}
-        &copy; {{ 'now' | date: '%Y' }} {{ site.author.name | default: site.title }}
-        {% endif %}
-      </p>
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/nethalo" class="footer-link">GitHub</a>
+      <a href="https://www.linkedin.com/in/danielmauricioguzman/" class="footer-link">LinkedIn</a>
+      <a href="{{ '/feed.xml' | relative_url }}" class="footer-link">RSS</a>
     </div>
   </div>
 </footer>

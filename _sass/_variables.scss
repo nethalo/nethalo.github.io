@@ -1,24 +1,106 @@
-// CSS Custom Properties
+// Rendiment Design System Variables
+// Updated: 2026-02-15 - Bold coral red rebrand for performance and urgency
+
 :root {
-  // Primary brand color
-  --primary-color: #ffbe98;
-  --primary-color-dark: #ff9f6e;
-  --primary-color-light: #ffd4b8;
+  // === Color Palette ===
 
-  // Typography
-  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  // Primary coral red accent
+  --accent-green: #E7494C;
+  --accent-green-dark: #d63539;
+  --accent-green-light: #f06366;
+  --accent-green-bg: rgba(231, 73, 76, 0.08);
 
-  // Spacing
-  --section-spacing: 3rem;
-  --card-spacing: 1.5rem;
+  // Dark section colors (navy from flyer)
+  --dark-bg: #1A2332;
+  --dark-surface: #1e2938;
+  --dark-border: #2d3748;
+  --dark-text: #a8b3cf;
+  --dark-text-muted: #6b7a99;
 
-  // Header
-  --header-height: 400px;
-  --header-height-mobile: 250px;
+  // Light theme colors
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --text-primary: #0a0e17;
+  --text-secondary: #4a5568;
+  --text-muted: #718096;
+  --border-color: #e2e8f0;
 
-  // Footer
-  --footer-bg: #f8f9fa;
+  // Semantic colors
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --info: #3b82f6;
+
+  // Category badge colors (complementing coral red)
+  --category-mysql: #E7494C;
+  --category-postgresql: #2D3748;
+  --category-performance: #8b5cf6;
+  --category-monitoring: #ec4899;
+  --category-tools: #f59e0b;
+  --category-operations: #10b981;
+
+  // Badge navy for "Featured" (from flyer)
+  --badge-amber: #1A2332;
+  --badge-amber-bg: rgba(26, 35, 50, 0.1);
+
+  // === Typography ===
+
+  // Font families
+  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+
+  // Font weights
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  // === Spacing ===
+  --section-spacing: 5rem;
+  --section-spacing-mobile: 3rem;
+  --card-gap: 1.5rem;
+  --content-padding: 1.5rem;
+
+  // === Sizing ===
+  --navbar-height: 70px;
+  --max-width-content: 720px;
+  --max-width-reading: 680px;
+  --max-width-container: 1200px;
+
+  // === Effects ===
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-card-hover: 0 8px 16px rgba(0, 0, 0, 0.12);
+
+  --blur-glass: blur(20px);
+  --blur-backdrop: blur(10px);
+
+  // Border radius
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 50px;
+
+  // Transitions
+  --transition-base: 0.2s ease;
+  --transition-slow: 0.3s ease;
+
+  // === Z-index layers ===
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
 }
 
-// Bootstrap variable overrides (loaded before Bootstrap CDN)
-$primary: #ffbe98;
+// Bootstrap SCSS variable overrides
+// These are used if Bootstrap is compiled from source (not CDN)
+// We override via CSS custom properties instead
+$primary: #E7494C;
+$font-family-base: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+$font-family-monospace: 'JetBrains Mono', 'SF Mono', Monaco, 'Cascadia Code', monospace;

@@ -1,0 +1,125 @@
+// Base styles and global overrides
+
+// Body defaults
+body {
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+main {
+  flex: 1;
+}
+
+// Global link styles
+a {
+  color: var(--accent-green);
+  text-decoration: none;
+  transition: color var(--transition-base);
+
+  &:hover {
+    color: var(--accent-green-dark);
+  }
+}
+
+// Section labels (monospace labels like "// LATEST POSTS")
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: var(--font-semibold);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--accent-green);
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.section-label-dark {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: var(--font-semibold);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--accent-green-light);
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+// Text accent class
+.text-accent {
+  color: var(--accent-green);
+}
+
+// Bootstrap overrides for green color scheme
+// (When using Bootstrap CDN, we override the default blue)
+
+.bg-primary {
+  background-color: var(--accent-green) !important;
+}
+
+.btn-primary {
+  background-color: var(--accent-green);
+  border-color: var(--accent-green);
+  color: white;
+
+  &:hover {
+    background-color: var(--accent-green-dark);
+    border-color: var(--accent-green-dark);
+  }
+
+  &:focus,
+  &:active {
+    background-color: var(--accent-green-dark);
+    border-color: var(--accent-green-dark);
+    box-shadow: 0 0 0 0.2rem rgba(231, 73, 76, 0.25);
+  }
+}
+
+.btn-outline-primary {
+  color: var(--accent-green);
+  border-color: var(--accent-green);
+
+  &:hover {
+    background-color: var(--accent-green);
+    border-color: var(--accent-green);
+    color: white;
+  }
+}
+
+// Pagination links
+.page-link {
+  color: var(--accent-green);
+
+  &:hover {
+    color: var(--accent-green-dark);
+    background-color: var(--accent-green-bg);
+    border-color: var(--accent-green);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba(231, 73, 76, 0.25);
+  }
+}
+
+.page-item.active .page-link {
+  background-color: var(--accent-green);
+  border-color: var(--accent-green);
+}
+
+// Badge override
+.badge-primary {
+  background-color: var(--accent-green);
+}
+
+// Link color in Bootstrap text
+.text-primary {
+  color: var(--accent-green) !important;
+}
+
+.border-primary {
+  border-color: var(--accent-green) !important;
+}

@@ -1,0 +1,15 @@
+// Section divider SVG
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  justifycontent: center;
+  padding: 0 2.5rem;
+  background-color: #fafbfc;
+  min-height: 60px;
+
+  svg {
+    display: block;
+    margin: 0 auto;
+  }
+}

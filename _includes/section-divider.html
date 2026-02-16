@@ -1,0 +1,21 @@
+{%- comment -%}
+  Section divider with three dots and lines
+  Parameters: variant (green or blue)
+{%- endcomment -%}
+
+{%- assign variant = include.variant | default: "green" -%}
+{%- if variant == "green" -%}
+  {%- assign color = "#E7494C" -%}
+{%- else -%}
+  {%- assign color = "#3b82f6" -%}
+{%- endif -%}
+
+<div class="section-divider">
+  <svg width="200" height="24" viewBox="0 0 200 24">
+    <line x1="0" y1="12" x2="80" y2="12" stroke="#e0e4ea" stroke-width="1"/>
+    <circle cx="95" cy="12" r="3" fill="{{ color }}" opacity=".2"/>
+    <circle cx="100" cy="12" r="2" fill="{{ color }}" opacity=".5"/>
+    <circle cx="105" cy="12" r="3" fill="{{ color }}" opacity=".2"/>
+    <line x1="120" y1="12" x2="200" y2="12" stroke="#e0e4ea" stroke-width="1"/>
+  </svg>
+</div>

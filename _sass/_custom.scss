@@ -1,28 +1,5 @@
 // Custom site styles
-
-// Body and layout
-body {
-  font-family: var(--font-family-base);
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-main {
-  flex: 1;
-}
-
-// Homepage background
-.home-bg {
-  background-image: url('/assets/img/gallery/bg.jpg');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-
-  @media (max-width: 768px) {
-    background-attachment: scroll;
-  }
-}
+// Updated: 2026-02-15 - Redesign with green accent
 
 // Header image banner
 .header-image {
@@ -48,37 +25,6 @@ main {
     right: 0;
     bottom: 0;
     background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.5));
-  }
-}
-
-// Post cards
-.post-card {
-  height: 100%;
-  transition: transform 0.2s, box-shadow 0.2s;
-  border: 1px solid rgba(0, 0, 0, 0.125);
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  }
-
-  .card-img-top {
-    height: 200px;
-    object-fit: cover;
-  }
-
-  .card-body {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .card-title {
-    color: #212529;
-    text-decoration: none;
-
-    &:hover {
-      color: var(--primary-color-dark);
-    }
   }
 }
 
@@ -109,37 +55,7 @@ main {
     font-size: 1.25rem;
 
     &:hover {
-      color: var(--primary-color);
-    }
-  }
-}
-
-// Footer
-footer {
-  background-color: var(--footer-bg);
-  margin-top: var(--section-spacing);
-  padding: 2rem 0;
-  border-top: 1px solid #dee2e6;
-
-  .footer-links a {
-    margin: 0 0.5rem;
-    color: #6c757d;
-    font-size: 1.5rem;
-
-    &:hover {
-      color: var(--primary-color);
-    }
-  }
-}
-
-// Navbar customizations
-.navbar {
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-
-  .nav-link {
-    &.active,
-    &:hover {
-      color: var(--primary-color) !important;
+      color: var(--accent-green);
     }
   }
 }
@@ -186,7 +102,7 @@ footer {
         text-decoration: none;
 
         &:hover {
-          color: var(--primary-color);
+          color: var(--accent-green);
         }
       }
     }
@@ -211,7 +127,7 @@ footer {
   margin-bottom: 2rem;
 
   h2 {
-    border-bottom: 2px solid var(--primary-color);
+    border-bottom: 2px solid var(--accent-green);
     padding-bottom: 0.5rem;
     margin-bottom: 1.5rem;
   }
@@ -241,7 +157,7 @@ footer {
       text-decoration: none;
 
       &:hover {
-        color: var(--primary-color);
+        color: var(--accent-green);
       }
     }
   }
@@ -266,22 +182,22 @@ footer {
 // Collapsible code blocks
 details {
   margin: 1.5rem 0;
-  border: 1px solid #44475a;
-  border-radius: 0.375rem;
-  background-color: #282a36;
+  border: 1px solid var(--dark-border);
+  border-radius: var(--radius-md);
+  background-color: var(--dark-surface);
   overflow: hidden;
 
   summary {
     cursor: pointer;
     padding: 0.75rem 1rem;
-    background-color: #44475a;
+    background-color: #1a2333;
     color: #f8f8f2;
     font-weight: 500;
     user-select: none;
     transition: background-color 0.2s;
 
     &:hover {
-      background-color: #6272a4;
+      background-color: #253044;
     }
 
     &::marker {
@@ -294,7 +210,7 @@ details {
   }
 
   &[open] summary {
-    border-bottom: 1px solid #44475a;
+    border-bottom: 1px solid var(--dark-border);
     margin-bottom: 0;
   }
 

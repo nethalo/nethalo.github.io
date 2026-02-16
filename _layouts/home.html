@@ -1,0 +1,25 @@
+---
+layout: base
+---
+{%- comment -%}
+  Home layout - assembles all homepage sections
+  Updated: 2026-02-15 - Complete redesign
+{%- endcomment -%}
+
+{% include hero.html %}
+
+{% include blog-listing.html %}
+
+{% include section-divider.html variant="green" %}
+
+{% include value-props.html %}
+
+{% include dark-section.html %}
+
+{% include section-divider.html variant="blue" %}
+
+{% include tech-stack.html %}
+
+{%- comment -%} Load homepage JavaScript {%- endcomment -%}
+<script src="{{ '/assets/js/scroll-animate.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/category-filter.js' | relative_url }}"></script>

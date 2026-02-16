@@ -1,9 +1,7 @@
-<nav class="navbar navbar-expand-{{ site.navbar.expand | default: 'md' }} navbar-light bg-white sticky-top">
+<nav class="navbar navbar-expand-{{ site.navbar.expand | default: 'md' }} navbar-light">
   <div class="container">
     <a class="navbar-brand" href="{{ site.navbar.brand.url | default: '/' | relative_url }}">
-      {% if site.navbar.brand.img %}
-      <img src="{{ site.navbar.brand.img | relative_url }}" alt="{{ site.navbar.brand.title | default: site.title }}">
-      {% endif %}
+      <div class="navbar-logo">R</div>
       {{ site.navbar.brand.title | default: site.title }}
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -12,22 +10,9 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         {% for item in site.navbar.nav %}
-        {% if item.child %}
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown{{ forloop.index }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            {{ item.title }}
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown{{ forloop.index }}">
-            {% for child in item.child %}
-            <li><a class="dropdown-item" href="{{ child.url | relative_url }}">{{ child.title }}</a></li>
-            {% endfor %}
-          </ul>
-        </li>
-        {% else %}
         <li class="nav-item">
           <a class="nav-link{% if page.url == item.url %} active{% endif %}" href="{{ item.url | relative_url }}">{{ item.title }}</a>
         </li>
-        {% endif %}
         {% endfor %}
         {% if site.search.provider %}
         <li class="nav-item">

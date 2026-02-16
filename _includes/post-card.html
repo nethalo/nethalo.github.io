@@ -1,27 +1,53 @@
-<div class="card post-card">
-  {% if include.post.header_img %}
-  <img src="{{ include.post.header_img | relative_url }}" class="card-img-top" alt="{{ include.post.title }}">
-  {% endif %}
-  <div class="card-body">
-    <h5 class="card-title">
-      <a href="{{ include.post.url | relative_url }}" class="stretched-link">{{ include.post.title }}</a>
-    </h5>
-    {% if include.post.subtitle %}
-    <p class="card-text">{{ include.post.subtitle }}</p>
-    {% elsif include.post.excerpt %}
-    <p class="card-text">{{ include.post.excerpt | strip_html | truncate: 150 }}</p>
-    {% endif %}
-    <div class="card-meta">
-      <small class="text-muted">
-        <i class="far fa-calendar"></i> {{ include.post.date | date: "%B %d, %Y" }}
-      </small>
-      {% if include.post.categories.size > 0 %}
-      <div class="mt-2">
-        {% for category in include.post.categories %}
-        <span class="badge bg-primary">{{ category }}</span>
+{%- comment -%}
+  Regular post card - horizontal layout
+  Used in: homepage blog listing, /blog/ page
+{%- endcomment -%}
+
+{%- assign post = include.post -%}
+{%- assign categories_string = post.categories | join: "," | downcase -%}
+
+<article class="post-card-new" data-categories="{{ categories_string }}">
+  <a href="{{ post.url | relative_url }}" class="post-card-link">
+    {%- comment -%} Left: Thumbnail {%- endcomment -%}
+    <div class="post-card-thumbnail">
+      {% if post.header_img %}
+      <img src="{{ post.header_img | relative_url }}" alt="{{ post.title }}" loading="lazy">
+      {% else %}
+      <div class="post-card-placeholder"></div>
+      {% endif %}
+    </div>
+
+    {%- comment -%} Middle: Content {%- endcomment -%}
+    <div class="post-card-body">
+      <div class="post-card-meta">
+        {% if post.categories.size > 0 %}
+          {%- assign first_category = post.categories.first | downcase -%}
+          <span class="badge-category badge-category-{{ first_category }}">{{ post.categories.first }}</span>
+        {% endif %}
+        <span class="post-card-date">{{ post.date | date: "%b %d, %Y" }}</span>
+      </div>
+
+      <h3 class="post-card-title">{{ post.title }}</h3>
+
+      {% if post.subtitle %}
+      <p class="post-card-subtitle">{{ post.subtitle }}</p>
+      {% elsif post.excerpt %}
+      <p class="post-card-subtitle">{{ post.excerpt | strip_html | truncate: 100 }}</p>
+      {% endif %}
+
+      {%- comment -%} Tags {%- endcomment -%}
+      {% if post.tags.size > 0 %}
+      <div class="post-card-tags">
+        {% for tag in post.tags limit:3 %}
+        <span class="tag">{{ tag }}</span>
         {% endfor %}
       </div>
       {% endif %}
     </div>
-  </div>
-</div>
+
+    {%- comment -%} Right: Arrow {%- endcomment -%}
+    <div class="post-card-arrow">
+      <i class="fas fa-arrow-right"></i>
+    </div>
+  </a>
+</article>

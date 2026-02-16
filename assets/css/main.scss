@@ -1,6 +1,21 @@
 ---
 ---
 
+// Rendiment Main Stylesheet
+// Import order matters - variables first, then base, then components, custom last
+
 @import "variables";
+@import "base";
 @import "syntax";
+@import "navbar";
+@import "hero";
+@import "cards";
+@import "category-filters";
+@import "value-props";
+@import "dark-section";
+@import "section-divider";
+@import "tech-stack";
+@import "footer";
+@import "animations";
+@import "post";
 @import "custom";

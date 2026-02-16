@@ -116,13 +116,34 @@ Uses kramdown processor with:
 
 ## Site Theme and Styling
 
-Custom Bootstrap 5 theme:
-- Primary color: `#ffbe98` (defined in `_sass/_variables.scss`)
-- Font family: Inter (Google Fonts)
-- Background image on homepage
-- Dracula syntax highlighting for code blocks
-- Responsive design with Bootstrap grid and components
-- Custom styles in `_sass/_custom.scss`
+Custom Bootstrap 5 theme with modern design system (Feb 2026 coral red rebrand):
+- **Primary color**: `#E7494C` coral red (defined in `_sass/_variables.scss`)
+- **Dark sections**: `#1A2332` navy blue for contrast sections
+- **Typography**: DM Sans (headings/body) + JetBrains Mono (code) via Google Fonts
+- **Design features**: Glassmorphism navbar, scroll animations, horizontal blog cards
+- **Code highlighting**: Darker Dracula theme (`#0e1421` background) for better contrast
+- **Responsive design**: Mobile-first with Bootstrap 5 grid and custom breakpoints
+
+### Design System Architecture
+
+**Modular SCSS Structure** (`assets/css/main.scss` imports in specific order):
+1. `_variables.scss` - All design tokens (colors, spacing, typography, effects)
+2. `_base.scss` - Global styles, resets, Bootstrap overrides
+3. Component partials: `_navbar`, `_hero`, `_cards`, `_footer`, etc.
+4. `_animations.scss` - Keyframes and scroll-triggered animations
+5. `_post.scss` - Individual post content styling
+6. `_custom.scss` - Site-specific overrides (loaded last)
+
+**Color Variable Strategy**:
+- Use **semantic names** not literal colors: `--accent-green` for primary color (even though it's now coral red)
+- Makes complete rebrands trivial: only update values in `_variables.scss`, not hundreds of CSS references
+- Example: Feb 2026 green→coral rebrand changed ~8 variable values instead of 50+ hardcoded colors
+- Also search for hardcoded rgba() values when rebranding: `rgba(0, 155, 110, ...)` → `rgba(231, 73, 76, ...)`
+
+**Component Architecture**:
+- Each major section has dedicated include + SCSS partial: hero, blog-listing, dark-section, tech-stack, etc.
+- JavaScript in `assets/js/`: category filtering, scroll animations, typing effects
+- All components use CSS custom properties from `_variables.scss` for consistency
 
 ## Important Notes
 
@@ -176,3 +197,83 @@ Invalid CSS after "...": expected "{", was "" on line 3
 3. Each fix addresses one specific build error
 
 This makes it easier to identify and revert specific changes if needed.
+
+## Lessons Learned (Coral Red Redesign - Feb 2026)
+
+### SEO Best Practices for Tag/Category Pages
+
+**Problem**: Aggregation pages like `/tags` and `/categories` create thin/duplicate content that can hurt SEO, but users need landing pages when clicking tag links on posts.
+
+**Solution**: Use `robots: noindex, follow` meta tag in page front matter:
+```yaml
+---
+layout: tags
+title: Tags
+permalink: /tags
+robots: noindex, follow
+---
+```
+
+Add robots meta tag support in `_layouts/base.html`:
+```html
+{% if page.robots %}
+<meta name="robots" content="{{ page.robots }}">
+{% endif %}
+```
+
+**Benefits**:
+- `noindex` prevents search engines from indexing thin content
+- `follow` allows crawlers to follow links to actual posts
+- Users get functional landing page, SEO stays clean
+- Remove aggregation pages from navbar to reduce visibility, but keep them accessible via post tag links
+
+### Client-Side Category Filtering
+
+**Pattern**: Blog category filtering without page reloads using data attributes + vanilla JavaScript.
+
+**Implementation**:
+1. Add `data-categories` attribute to post cards with comma-separated categories
+2. Filter buttons have `data-category` attribute (e.g., "mysql", "postgresql", "all")
+3. JavaScript toggles card visibility based on category match
+4. Hide featured card when filtering (prevent duplication since featured post appears in grid)
+
+**Benefits**:
+- No page reloads = instant filtering
+- All posts loaded once = better performance than multiple pages
+- Simple vanilla JS = no framework overhead
+- Featured post handling prevents duplicate content
+
+**Code location**: `assets/js/category-filter.js` + `_includes/blog-listing.html`
+
+### Color Rebrand Strategy
+
+**Lesson**: Complete visual rebrand (green #009b6e → coral red #E7494C) completed in under 30 minutes using semantic CSS variables.
+
+**Steps**:
+1. Update CSS custom properties in `_sass/_variables.scss` (primary source of truth)
+2. Search for hardcoded hex values: `#009b6e` in all SCSS/HTML files
+3. Search for hardcoded rgba values: `rgba(0, 155, 110, ...)` in SCSS files
+4. Update SVG fill/stroke colors in includes (hero, tech-stack, section-divider)
+5. Test across all pages: homepage, blog listing, individual posts, dark sections
+
+**Why it worked**:
+- Semantic variable names (`--accent-green`, `--accent-green-dark`) instead of `--color-green`
+- Single source of truth in `_variables.scss`
+- Only ~15 hardcoded color references to update (vs hundreds if no variables)
+- Design tokens approach: update values, not selectors
+
+### Scroll Animation Performance
+
+**Pattern**: IntersectionObserver for scroll-triggered animations (better than scroll event listeners).
+
+**Implementation**:
+- `assets/js/scroll-animate.js` observes elements with `.animate-on-scroll` class
+- Adds `.is-visible` class when element enters viewport (8% threshold)
+- CSS handles actual animations via transitions/keyframes
+- `@media (prefers-reduced-motion)` disables animations for accessibility
+
+**Benefits**:
+- No scroll event listeners = better performance
+- Respects user accessibility preferences
+- Staggered child animations with CSS nth-child delays
+- Fires once per element (not on every scroll frame)

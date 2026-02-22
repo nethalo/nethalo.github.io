@@ -248,6 +248,121 @@ Before committing a new post:
 - [ ] Code examples are tested and accurate
 - [ ] Spell-checked and proofread
 
+### End-to-End Guide: Post with Terminal Screenshots
+
+Use this when writing a post that includes VHS terminal screenshots (e.g. dbsafe output, CLI tools).
+
+**Step 1 — Create the post file**
+
+```
+_posts/YYYY-MM-DD-title-slug.md
+```
+
+Front matter with placeholder image paths:
+```yaml
+---
+title: "Post Title"
+subtitle: Short on-page description
+description: "150-160 char SEO description with primary keywords."
+categories: [mysql, tools]
+tags: [mysql, ddl, dbsafe]
+header_type: hero
+header_img: /assets/img/gallery/post-hero.jpg
+---
+```
+
+**Step 2 — Write the content**
+
+- Use H2 for main sections, H3 for subsections
+- Add internal links to 2-3 related posts (see Topic Clusters above)
+- Use `![alt text](/assets/img/gallery/screenshot-name.png)` as placeholder where screenshots will go
+- Write the alt text to be descriptive — it matters for SEO and accessibility
+
+**Step 3 — Create tape files for each screenshot**
+
+One `.tape` file per screenshot. Name them to match the output PNG:
+
+```tape
+Output assets/img/gallery/screenshot-name.gif
+
+Set Shell "bash"
+Set FontSize 14
+Set Width 1200
+Set Height 900
+Set Theme "Dracula"
+Set TypingSpeed 40ms
+Set Padding 20
+
+Type `export DBSAFE_PASSWORD=dbsafe_demo`
+Enter
+Sleep 500ms
+
+Type `/Users/dani/dbsafe/dbsafe plan -H 127.0.0.1 -P 23306 -u dbsafe -d demo "ALTER TABLE ..."`
+Enter
+Sleep 5s
+
+Screenshot assets/img/gallery/screenshot-name.png
+Sleep 1s
+```
+
+Height guide: use `900` for normal output, `1100` when output is tall (e.g. includes pt-osc command).
+
+**Important**: `Output *.gif` is a required throwaway — without it, `Screenshot` silently produces nothing (VHS bug #540). Use a relative path; absolute paths cause a parser error in VHS 0.10.0.
+
+**Step 4 — Run the tapes** *(must be done in your terminal, not Claude Code)*
+
+```bash
+vhs screenshot-name.tape
+# repeat for each tape
+```
+
+**Step 5 — Verify the screenshots**
+
+```bash
+# Must say "PNG image data", not "directory"
+file assets/img/gallery/screenshot-name.png
+
+# Check sizes: target <300KB for content screenshots
+ls -lh assets/img/gallery/screenshot-name.png
+```
+
+If a PNG is over 300KB, convert to JPEG:
+```bash
+sips -s format jpeg -s formatOptions 85 assets/img/gallery/screenshot-name.png \
+  --out assets/img/gallery/screenshot-name.jpg
+# then update the img reference in the post from .png to .jpg
+```
+
+**Step 6 — Clean up**
+
+```bash
+# Delete throwaway GIFs
+rm assets/img/gallery/*.gif
+```
+
+Tape files are gitignored (`*.tape`) — leave them on disk for future re-runs.
+
+**Step 7 — Optimize the hero image**
+
+```bash
+# JPEG hero (photos)
+sips -s format jpeg -s formatOptions 85 --resampleWidth 1600 hero.jpg
+
+# PNG hero (diagrams, screenshots) — note: sips can't quality-compress PNGs
+sips --resampleWidth 1600 hero.png
+# if still >400KB after resize, convert to JPEG instead
+```
+
+**Step 8 — Commit**
+
+```bash
+git add _posts/YYYY-MM-DD-title-slug.md assets/img/gallery/screenshot-name.png assets/img/gallery/post-hero.jpg
+git commit -m "Add post: short description"
+git push
+```
+
+Do **not** add: `.gif` files, `.tape` files, `_site/`, `.DS_Store`.
+
 ## Site Theme and Styling
 
 Custom Bootstrap 5 theme with modern design system (Feb 2026 coral red rebrand):

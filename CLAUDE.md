@@ -126,7 +126,8 @@ When creating a new post, follow these guidelines:
 - Use `sips` (macOS) to resize and compress:
   ```bash
   # Resize JPEG to 1600px width, 85% quality
-  sips --resampleWidth 1600 --setProperty formatOptions 85 image.jpg
+  # IMPORTANT: --setProperty formatOptions silently fails on JPEGs; use -s flags instead
+  sips -s format jpeg -s formatOptions 85 --resampleWidth 1600 image.jpg
 
   # Resize PNG to 1600px width
   sips --resampleWidth 1600 image.png
@@ -178,7 +179,8 @@ Dependencies managed via Bundler:
 - Use `sips` to optimize:
   ```bash
   # For JPEGs (photos, complex images)
-  sips --resampleWidth 1600 --setProperty formatOptions 85 image.jpg
+  # IMPORTANT: --setProperty formatOptions silently fails on JPEGs; use -s flags instead
+  sips -s format jpeg -s formatOptions 85 --resampleWidth 1600 image.jpg
 
   # For PNGs (screenshots, diagrams)
   sips --resampleWidth 1600 image.png
@@ -431,3 +433,22 @@ Add robots meta tag support in `_layouts/base.html`:
 **File**: `_includes/header-image.html`
 
 **Lesson**: When using aggressive HTML compression (`clippings: all`), decorative elements that rely purely on CSS styling need non-whitespace content to survive compression. Always test on GitHub Pages before assuming localhost behavior matches production.
+
+### sips JPEG Quality Flag Bug
+
+**Problem**: The documented `sips --setProperty formatOptions 85 image.jpg` command silently fails on JPEG files. sips shows a warning (`Output file suffix should be png`) and ignores the quality setting, leaving the file at its original encoding — or bloating it on repeated round-trips.
+
+**Solution**: Use explicit `-s` flags instead:
+```bash
+# CORRECT — quality is applied
+sips -s format jpeg -s formatOptions 85 --resampleWidth 1600 image.jpg
+
+# BROKEN — quality setting silently ignored on JPEGs
+sips --resampleWidth 1600 --setProperty formatOptions 85 image.jpg
+```
+
+**Additional note**: sips round-trips PNG files with poor compression. If a PNG screenshot is too large and `pngquant`/`optipng` are unavailable, convert it to JPEG:
+```bash
+sips -s format jpeg -s formatOptions 70 image.png --out image.jpg
+```
+Then update the post's image reference from `.png` to `.jpg`.

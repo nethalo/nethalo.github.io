@@ -452,3 +452,43 @@ sips --resampleWidth 1600 --setProperty formatOptions 85 image.jpg
 sips -s format jpeg -s formatOptions 70 image.png --out image.jpg
 ```
 Then update the post's image reference from `.png` to `.jpg`.
+
+### VHS Terminal Screenshots
+
+VHS is used to generate styled terminal screenshots (Dracula theme) for blog posts. The binary is at `/Users/dani/dbsafe/vhs` or available as `vhs` in PATH.
+
+**Correct tape structure** — `Screenshot` requires `Output` to initialize the recording pipeline (VHS bug #540). Without `Output`, `Screenshot` silently produces no file:
+
+```tape
+Output assets/img/gallery/my-screenshot.gif
+
+Set Shell "bash"
+Set FontSize 14
+Set Width 1200
+Set Height 900
+Set Theme "Dracula"
+Set TypingSpeed 40ms
+Set Padding 20
+
+Type `your command here`
+Enter
+Sleep 5s
+
+Screenshot assets/img/gallery/my-screenshot.png
+Sleep 1s
+```
+
+**Key rules:**
+- `Output` must use a **relative path** — absolute paths (starting with `/`) cause a parser error in VHS 0.10.0
+- Use `Output assets/img/gallery/name.gif` as a throwaway to initialize the pipeline; delete the GIF after
+- `Screenshot` captures a single PNG at that exact moment
+- Always add `Sleep 1s` after `Screenshot` (workaround for VHS bug #540)
+- Height: 1100 for tall output (pt-osc commands), 900 for shorter output
+
+**VHS cannot run inside the Claude Code sandbox** (no PTY devices). The user must run tapes directly in their terminal.
+
+**After running tapes:**
+1. Verify: `file assets/img/gallery/my-screenshot.png` — must be a single PNG file, not a directory
+2. Check sizes: `ls -lh assets/img/gallery/my-screenshot.png` — target <300KB for content screenshots
+3. Delete throwaway GIFs: `rm assets/img/gallery/*.gif`
+4. PNG terminal screenshots at 1200px are usually 150–350KB — acceptable to keep as PNG for text sharpness

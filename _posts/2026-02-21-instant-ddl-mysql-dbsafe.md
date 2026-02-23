@@ -94,7 +94,7 @@ CREATE TABLE orders (
   KEY idx_payment_status (payment_status),
   KEY idx_created_at (created_at),
   CONSTRAINT fk_orders_customer FOREIGN KEY (customer_id) REFERENCES customers (id)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 ```
 
 ## INSTANT ADD COLUMN (MySQL 8.0.12+)
@@ -155,15 +155,31 @@ Internally, InnoDB marks the column as dropped in the data dictionary. The physi
 
 Not every `ALTER TABLE` qualifies for INSTANT. Some operations that look simple still require INPLACE or COPY because they actually need to touch or reorganize row data.
 
-Expanding `order_number` from `VARCHAR(30)` to `VARCHAR(50)` looks trivial — it's still a string, same column, just a bigger declared limit. But `MODIFY COLUMN` is a full column redefinition: MySQL re-evaluates the column, its constraints, and its indexes from scratch, and here it chooses COPY:
+Expanding a VARCHAR column is a good example. Whether MySQL can do it in-place depends on whether the change crosses the [255-byte length-prefix boundary](https://dev.mysql.com/doc/refman/8.0/en/innodb-online-ddl-operations.html): VARCHAR values up to 255 bytes use a 1-byte length prefix, while values of 256 bytes or more use a 2-byte prefix. When the extension stays within the same boundary, MySQL only updates metadata. When it crosses, every row must be rewritten.
+
+The `orders` table uses `utf8mb3` (3 bytes per character), so the byte math matters:
+
+- `VARCHAR(30)` × 3 = **90 bytes** → 1-byte length prefix
+- `VARCHAR(50)` × 3 = **150 bytes** → 1-byte length prefix
+- `VARCHAR(255)` × 3 = **765 bytes** → 2-byte length prefix
+
+Extending `order_number` from `VARCHAR(30)` to `VARCHAR(50)` stays within the 1-byte prefix range — both are under 255 bytes. MySQL handles this as an INPLACE, metadata-only change:
 
 ```bash
 dbsafe plan "ALTER TABLE orders MODIFY COLUMN order_number VARCHAR(50)"
 ```
 
-![dbsafe output showing COPY algorithm, SHARED locking, and DANGEROUS risk for MODIFY COLUMN](/assets/img/gallery/dbsafe-not-instant.jpg)
+![dbsafe output showing INPLACE algorithm for VARCHAR(30) to VARCHAR(50) extension](/assets/img/gallery/dbsafe-instant-varchar-safe.png)
 
-> **Note:** A targeted size extension (`ALTER TABLE orders CHANGE order_number order_number VARCHAR(50)`) staying within the same length-prefix boundary (0–255 bytes) may qualify for INPLACE per the MySQL docs. But `MODIFY COLUMN` triggers a full column redefinition, and the presence of a UNIQUE KEY or NOT NULL constraint can push MySQL to COPY. Always verify with `dbsafe plan` — or test `ALGORITHM=INPLACE` explicitly and let MySQL reject it if unsupported.
+But extending to `VARCHAR(255)` crosses the boundary — from 90 bytes (1-byte prefix) to 765 bytes (2-byte prefix). MySQL must rewrite every row to change the length prefix, forcing a full COPY rebuild:
+
+```bash
+dbsafe plan "ALTER TABLE orders MODIFY COLUMN order_number VARCHAR(255)"
+```
+
+![dbsafe output showing COPY algorithm for VARCHAR(30) to VARCHAR(255) extension](/assets/img/gallery/dbsafe-instant-varchar-copy.png)
+
+> **Tip:** The boundary depends on your character set. With `utf8mb4` (4 bytes/char), `VARCHAR(64)` is already 256 bytes — past the threshold. With `latin1` (1 byte/char), you can extend up to `VARCHAR(255)` in-place. Always check the byte length, not the character count.
 
 Other common operations that won't be INSTANT:
 

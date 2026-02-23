@@ -8,7 +8,7 @@ header_type: hero
 header_img: /assets/img/gallery/instant-ddl-hero.jpg
 ---
 
-You need to add a column to a 500-million-row production table. Traditionally, that means hours of disk I/O, replication lag that grows faster than you can drain it, and a maintenance window to tell your users about. With MySQL 8.0 INSTANT DDL, that same change completes in milliseconds — no table rebuild, no row copies, zero locks.
+You need to add a column to a 500-million-row production table. Traditionally, that means hours of disk I/O, replication lag that grows faster than you can drain it, and a maintenance window to tell your users about. With MySQL 8.0 INSTANT DDL, that same change completes in milliseconds — no table rebuild, no row copies, only a brief exclusive metadata lock during the commit phase.
 
 This post covers exactly which operations qualify for INSTANT execution, how MySQL 8.0.29 extended the feature significantly, and how to use [dbsafe](/mysql/tools/2026/02/14/introducing-dbsafe-know-before-you-alter.html) to verify the algorithm before you ever touch production.
 
@@ -40,7 +40,7 @@ INSTANT DDL was introduced in [MySQL 8.0.12 for trailing ADD COLUMN](https://dev
 The key properties:
 
 - **No table rebuild** — physical row data is not copied or reorganized
-- **No locks** — reads and writes proceed normally throughout the operation
+- **Brief metadata lock only** — reads and writes proceed normally; a brief exclusive metadata lock is taken during the commit phase
 - **Instant execution** — completes in milliseconds regardless of table size (500 rows or 500 million)
 - **Metadata-only** — only the InnoDB data dictionary is modified
 
@@ -155,21 +155,22 @@ Internally, InnoDB marks the column as dropped in the data dictionary. The physi
 
 Not every `ALTER TABLE` qualifies for INSTANT. Some operations that look simple still require INPLACE or COPY because they actually need to touch or reorganize row data.
 
-Expanding `order_number` from `VARCHAR(30)` to `VARCHAR(50)` looks trivial — it's still a string, same column, just a bigger declared limit. But this touches the internal byte representation and requires a full table rebuild:
+Expanding `order_number` from `VARCHAR(30)` to `VARCHAR(50)` looks trivial — it's still a string, same column, just a bigger declared limit. But `MODIFY COLUMN` is a full column redefinition: MySQL re-evaluates the column, its constraints, and its indexes from scratch, and here it chooses COPY:
 
 ```bash
 dbsafe plan "ALTER TABLE orders MODIFY COLUMN order_number VARCHAR(50)"
 ```
 
-![dbsafe output showing COPY algorithm, EXCLUSIVE locking, and DANGEROUS risk for MODIFY COLUMN](/assets/img/gallery/dbsafe-not-instant.jpg)
+![dbsafe output showing COPY algorithm, SHARED locking, and DANGEROUS risk for MODIFY COLUMN](/assets/img/gallery/dbsafe-not-instant.jpg)
 
-Even though the column still holds strings, changing the declared size of a `VARCHAR` can require changing the internal byte representation — MySQL plays it safe and rebuilds. Other common operations that won't be INSTANT:
+> **Note:** A targeted size extension (`ALTER TABLE orders CHANGE order_number order_number VARCHAR(50)`) staying within the same length-prefix boundary (0–255 bytes) may qualify for INPLACE per the MySQL docs. But `MODIFY COLUMN` triggers a full column redefinition, and the presence of a UNIQUE KEY or NOT NULL constraint can push MySQL to COPY. Always verify with `dbsafe plan` — or test `ALGORITHM=INPLACE` explicitly and let MySQL reject it if unsupported.
+
+Other common operations that won't be INSTANT:
 
 - **Changing column data type** (`INT` → `BIGINT`, `VARCHAR` → `TEXT`) → COPY
 - **Adding an index** → INPLACE (reads all rows to build the index)
 - **Changing `NULL` to `NOT NULL`** → INPLACE or COPY (needs to validate existing rows)
-- **Changing the primary key** → COPY (entire clustered index must be rebuilt)
-- **Adding a column with a non-NULL default (pre-8.0.29)** → INPLACE
+- **Dropping the primary key without a replacement** → COPY (entire clustered index must be rebuilt); adding or replacing a PK → INPLACE (with rebuild, but faster than COPY)
 
 For these operations, you need a different approach: [gh-ost](https://github.com/github/gh-ost), [pt-online-schema-change](https://docs.percona.com/percona-toolkit/pt-online-schema-change.html), or a carefully planned maintenance window. The [MySQL Online DDL Operations reference](https://dev.mysql.com/doc/refman/8.0/en/innodb-online-ddl-operations.html) has the full matrix of what's possible.
 
@@ -180,12 +181,13 @@ For these operations, you need a different approach: [gh-ost](https://github.com
 | ADD COLUMN (trailing) | INSTANT | INSTANT |
 | ADD COLUMN (AFTER/FIRST) | INPLACE | INSTANT |
 | DROP COLUMN | INPLACE (rebuild) | INSTANT |
-| RENAME COLUMN | INSTANT | INSTANT |
+| RENAME COLUMN | INPLACE | INSTANT |
 | Set/drop column default | INSTANT | INSTANT |
 | MODIFY COLUMN (type change) | COPY | COPY |
 | ADD INDEX | INPLACE | INPLACE |
 | Change NULL → NOT NULL | INPLACE/COPY | INPLACE/COPY |
-| Change PRIMARY KEY | COPY | COPY |
+| Drop PRIMARY KEY (no replacement) | COPY | COPY |
+| Add/replace PRIMARY KEY | INPLACE (rebuild) | INPLACE (rebuild) |
 
 ## Practical Workflow
 
@@ -223,7 +225,7 @@ For Galera/PXC clusters, the stakes are higher: even an INSTANT DDL in TOI mode 
 
 ## Summary
 
-1. **INSTANT DDL modifies only the InnoDB data dictionary** — no row copies, no table rebuild, no locks, milliseconds regardless of table size.
+1. **INSTANT DDL modifies only the InnoDB data dictionary** — no row copies, no table rebuild, only a brief exclusive metadata lock during the commit phase, milliseconds regardless of table size.
 2. **MySQL 8.0.12** introduced INSTANT ADD COLUMN for trailing positions only.
 3. **MySQL 8.0.29** extended INSTANT to ADD COLUMN at any position and DROP COLUMN — two of the most common DBA operations.
 4. **Not every ALTER qualifies**: data type changes, index additions, and NULL → NOT NULL changes still rebuild.

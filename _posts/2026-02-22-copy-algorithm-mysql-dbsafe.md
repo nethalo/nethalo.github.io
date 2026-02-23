@@ -105,7 +105,11 @@ All DECIMAL precision changes require `ALGORITHM=COPY` — there are no INSTANT 
 
 ## Character Set Conversion
 
-Converting a table's character set triggers a full table rebuild using `ALGORITHM=INPLACE` — not COPY. The distinction matters: unlike COPY, INPLACE charset conversion permits concurrent DML (`LOCK=NONE`), so reads and writes are not blocked during the operation. That said, the physical work is equivalent — every string value in every row must be re-encoded. When you run:
+Converting a table's character set triggers a full table rebuild. The algorithm MySQL uses — COPY or INPLACE — depends on whether the table has indexes on character columns. Per [WL#11605](https://dev.mysql.com/worklog/task/?id=11605), collation changes on indexed columns cannot be performed inplace. If any `VARCHAR`, `CHAR`, or `TEXT` column involved in the conversion is part of an index, MySQL falls back to `ALGORITHM=COPY`.
+
+Even when INPLACE is possible (tables with no indexes on string columns), `CONVERT TO CHARACTER SET` does not permit concurrent DML — the table is blocked for writes during the entire rebuild. This is a critical distinction from `ALTER TABLE ... CHARACTER SET = ...` (which only changes the table default without converting existing columns), which does allow concurrent DML under INPLACE.
+
+For the `orders` table, five indexes reference VARCHAR columns (`uq_order_number`, `idx_status`, `idx_payment_method`, `idx_status_created`), so this conversion uses COPY. When you run:
 
 ```bash
 dbsafe plan "ALTER TABLE orders CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
@@ -113,7 +117,7 @@ dbsafe plan "ALTER TABLE orders CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4
 
 ![dbsafe output showing COPY algorithm for CONVERT TO CHARACTER SET utf8mb4](/assets/img/gallery/dbsafe-copy-charset-conversion.png)
 
-Every string column in the table must be re-encoded. A `latin1` character that fits in 1 byte may require up to 4 bytes in `utf8mb4`. MySQL cannot predict which characters in your data need expansion, so it has to rewrite every string value in every row.
+Every string column in the table must be re-encoded. A `utf8mb3` character that uses up to 3 bytes may require up to 4 bytes in `utf8mb4`. While `utf8mb3` is a strict subset of `utf8mb4` (all valid `utf8mb3` byte sequences are valid `utf8mb4`), the change in maximum bytes-per-character affects column metadata, index key lengths, and the VARCHAR length-prefix calculations — which is why the table must be rebuilt. MySQL cannot predict which characters in your data need expansion, so it has to rewrite every string value in every row.
 
 Two additional risks specific to charset conversions:
 
@@ -178,7 +182,7 @@ For automated pipelines, `dbsafe plan --format json` lets you extract the algori
 ## Summary
 
 1. **COPY algorithm means a full table duplicate** — MySQL creates a new table, copies every row, then swaps. Disk space doubles temporarily. DML (writes) is blocked throughout under `LOCK=SHARED`, but reads can continue.
-2. **The most common COPY triggers are** `MODIFY COLUMN` (any size or type change that crosses the VARCHAR length-prefix boundary or changes binary encoding), `CHANGE COLUMN` with a type change, and dropping a primary key without replacement. Charset conversions and some other structural changes use INPLACE with a full rebuild — the row copy still happens, but concurrent reads and writes are allowed.
+2. **The most common COPY triggers are** `MODIFY COLUMN` (any size or type change that crosses the VARCHAR length-prefix boundary or changes binary encoding), `CHANGE COLUMN` with a type change, and dropping a primary key without replacement. Charset conversions (`CONVERT TO CHARACTER SET`) use COPY when the table has indexes on character columns — which is the common case for production tables. Even when INPLACE is possible, concurrent DML is not permitted. In either case, the physical work is a full row-by-row rebuild.
 3. **Risk scales with table size** — a COPY on a 500GB table takes hours; a COPY on a 50MB table takes seconds. dbsafe estimates duration from your actual row count and row size.
 4. **dbsafe detects the algorithm and generates the mitigation command** — gh-ost for standalone and async replication, pt-osc for triggered tables, Galera/PXC clusters, and Aurora.
 5. **Always run `dbsafe plan` before any production schema change** — especially for operations that look innocent, like expanding a VARCHAR or renaming a column with a type change.

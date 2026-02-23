@@ -10,7 +10,7 @@ header_img: /assets/img/gallery/copy-algorithm-hero.png
 
 You run `ALTER TABLE orders MODIFY COLUMN status VARCHAR(100)` on your production table. It looks simple — the column already exists, you're just increasing the size limit. Then you watch the operation spin for 40 minutes while your application throws lock timeout errors and your replica falls an hour behind. MySQL didn't update the column definition. It built an entirely new copy of the table from scratch.
 
-This is the COPY algorithm: the most disruptive class of `ALTER TABLE` operations. Unlike the [INSTANT DDL operations covered in the previous post](/mysql/tools/2026/02/21/instant-ddl-mysql-dbsafe.html), COPY operations touch every row, hold exclusive locks for the duration, and can take hours on large tables — or days.
+This is the COPY algorithm: the most disruptive class of `ALTER TABLE` operations. Unlike the [INSTANT DDL operations covered in the previous post](/mysql/tools/2026/02/21/instant-ddl-mysql-dbsafe.html), COPY operations touch every row, block DML for the duration, and can take hours on large tables — or days.
 
 This post covers exactly which operations trigger COPY, what physically happens at the InnoDB level, how table size translates to actual risk, and how [dbsafe](/mysql/tools/2026/02/14/introducing-dbsafe-know-before-you-alter.html) detects the algorithm and generates the mitigation commands you need.
 
@@ -43,9 +43,9 @@ No rows are skipped. The operation is as expensive as it looks — a full sequen
 
 Four risk factors compound this:
 
-1. **Exclusive locks** — the table is locked for reads and writes for the entire duration of the copy on MySQL standalone. Applications cannot read or write affected rows.
+1. **Shared lock** — the table is locked for writes (DML) but reads (`SELECT`) continue under `LOCK=SHARED` during the copy. Applications cannot insert, update, or delete rows, but queries can still read.
 2. **Disk space doubles** — the new table must exist alongside the original until the rename. A 200GB table requires 200GB of free disk space during the operation.
-3. **Replication lag** — replicas apply the full row copy as a DML workload, creating lag proportional to table size and I/O throughput.
+3. **Replication lag** — replicas must independently re-execute the full `ALTER TABLE`, creating lag proportional to table size and I/O throughput.
 4. **Duration scales with row count** — 10 million rows takes roughly 10× longer than 1 million rows. There's no shortcut.
 
 INPLACE operations are better — they often avoid the row-by-row copy — but can still require an internal data rebuild and may hold metadata locks. INSTANT is the only truly lock-free path, and it only applies to [a specific set of operations](/mysql/tools/2026/02/21/instant-ddl-mysql-dbsafe.html).
@@ -68,7 +68,14 @@ dbsafe plan "ALTER TABLE orders MODIFY COLUMN status VARCHAR(100)"
 
 dbsafe reports `Algorithm: COPY`, `Lock: SHARED`, and a `Dangerous` risk assessment. The analysis includes disk space required, an explanation of why gh-ost cannot be used (the table has triggers), and a ready-to-run `pt-online-schema-change` command with `--preserve-triggers`.
 
-The reason this triggers COPY comes down to how InnoDB stores variable-length columns. MySQL's row format encodes the length of each `VARCHAR` value using 1 or 2 bytes depending on the declared maximum. A `VARCHAR(20)` uses 1 byte for the length prefix (max 255 bytes fits in 1 byte). A `VARCHAR(100)` at single-byte charset also fits in 1 byte — but MySQL's algorithm is conservative. When any ambiguity exists about whether the internal byte representation changes, MySQL defaults to COPY. Widening a VARCHAR always triggers a full rebuild.
+The reason this triggers COPY comes down to how InnoDB stores variable-length columns. MySQL's row format encodes the length of each `VARCHAR` value using 1 or 2 bytes depending on the declared maximum:
+
+- **1-byte length prefix**: VARCHAR where `max_chars × bytes_per_char ≤ 255`
+- **2-byte length prefix**: VARCHAR where `max_chars × bytes_per_char > 255`
+
+Crossing that 255-byte boundary forces an on-disk format change that requires rewriting every row — triggering COPY.
+
+The charset is the critical variable. With `latin1` (1 byte/char), `VARCHAR(20)` = 20 bytes and `VARCHAR(100)` = 100 bytes — both stay under 255, so the expansion is INPLACE. With `utf8mb4` (up to 4 bytes/char), `VARCHAR(20)` = 80 bytes and `VARCHAR(100)` = 400 bytes — crossing the boundary triggers COPY. The `orders` table uses `utf8mb4`, which is why dbsafe reports COPY here.
 
 The practical rule: **any `MODIFY COLUMN` that changes size, type, nullability, or charset will use COPY or INPLACE — never INSTANT.**
 
@@ -84,9 +91,9 @@ dbsafe plan "ALTER TABLE orders CHANGE COLUMN total_amount amount DECIMAL(14,4)"
 
 The type change from `DECIMAL(12,2)` to `DECIMAL(14,4)` forces COPY. Changing decimal scale (the digits after the decimal point) modifies the internal binary encoding of every stored value — so every row must be rewritten.
 
-Note that not all DECIMAL precision changes force COPY. MySQL 8.0.29+ can handle some widening operations as INSTANT if the scale stays the same. When in doubt, run `dbsafe plan` against your actual MySQL version before assuming the algorithm.
+All DECIMAL precision changes require `ALGORITHM=COPY` — there are no INSTANT or INPLACE exceptions like VARCHAR has ([MySQL docs](https://dev.mysql.com/doc/refman/8.0/en/innodb-online-ddl-operations.html)). When in doubt, run `dbsafe plan` against your actual MySQL version before assuming the algorithm.
 
-> **Tip:** If you only need to rename the column — without changing the type — use `RENAME COLUMN` instead of `CHANGE COLUMN`. `RENAME COLUMN` is available from MySQL 8.0.3+ and executes as INSTANT DDL: no row copies, no locks, milliseconds regardless of table size.
+> **Tip:** If you only need to rename the column — without changing the type — use `RENAME COLUMN` instead of `CHANGE COLUMN`. `RENAME COLUMN` is available from MySQL 8.0.3+; it executes as INSTANT DDL from MySQL 8.0.28+ (INPLACE on earlier 8.0.x versions). Either way: no full row copy, milliseconds on any table size.
 >
 > ```sql
 > -- INSTANT on MySQL 8.0.3+ (rename only, no type change)
@@ -98,7 +105,7 @@ Note that not all DECIMAL precision changes force COPY. MySQL 8.0.29+ can handle
 
 ## Character Set Conversion
 
-Converting a table's character set is always COPY — no exceptions. When you run:
+Converting a table's character set triggers a full table rebuild using `ALGORITHM=INPLACE` — not COPY. The distinction matters: unlike COPY, INPLACE charset conversion permits concurrent DML (`LOCK=NONE`), so reads and writes are not blocked during the operation. That said, the physical work is equivalent — every string value in every row must be re-encoded. When you run:
 
 ```bash
 dbsafe plan "ALTER TABLE orders CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
@@ -121,15 +128,15 @@ When dbsafe detects a COPY algorithm operation, it doesn't just warn you — it 
 
 You already saw the full output in the MODIFY COLUMN screenshot above. The bottom of the dbsafe report includes a complete `pt-online-schema-change` command with your server's connection parameters, the table name, and the `--alter` flag pre-populated with your statement. You copy, review, and run it.
 
-For the `orders` table in our demo, dbsafe recommended pt-osc — not gh-ost — because `orders` has two triggers (`trg_orders_after_update`, `trg_orders_after_delete`). gh-ost cannot operate on tables with existing triggers: it installs its own triggers on the shadow table as part of its row-copy mechanism, and MySQL only allows one trigger per event/timing combination. dbsafe detects triggers via `information_schema.TRIGGERS` and switches the recommendation automatically.
+For the `orders` table in our demo, dbsafe recommended pt-osc — not gh-ost — because `orders` has two triggers (`trg_orders_after_update`, `trg_orders_after_delete`). gh-ost explicitly does not support tables with existing triggers — this is a documented hard limitation. gh-ost is triggerless by design: it captures row changes via binlog streaming rather than installing triggers. But when the source table has its own triggers, those triggers fire during gh-ost's row copy and can produce unexpected side effects (double-firing, inconsistent data). gh-ost refuses to run in this case. dbsafe detects triggers via `information_schema.TRIGGERS` and switches the recommendation to pt-osc automatically.
 
 **The full decision matrix for which tool dbsafe recommends:**
 
-- **Table has triggers → pt-online-schema-change** — gh-ost installs its own `AFTER UPDATE` and `AFTER DELETE` triggers on the shadow table. If your table already has triggers on those events, the installation fails. dbsafe checks for triggers first and routes to pt-osc.
+- **Table has triggers → pt-online-schema-change** — gh-ost cannot operate on tables with existing triggers (known limitation). dbsafe checks for triggers first and routes to pt-osc, which handles triggers correctly via `--preserve-triggers`.
 
-- **Galera/PXC cluster → pt-online-schema-change** — gh-ost's binlog streaming approach conflicts with Galera's writeset-based replication. pt-osc uses standard SQL DML that replicates correctly through wsrep. dbsafe detects the cluster topology and switches the recommendation automatically.
+- **Galera/PXC cluster → pt-online-schema-change** — gh-ost has known incompatibilities with Galera/PXC due to differences in how DDL and locking interact with writeset replication. pt-osc uses standard SQL DML that replicates correctly through wsrep. dbsafe detects the cluster topology and switches the recommendation automatically.
 
-- **Amazon Aurora → pt-online-schema-change** — Aurora uses storage-layer replication rather than binlog-based replication. gh-ost's dependency on binlog streaming means it cannot be used directly against Aurora writer instances. pt-osc works correctly.
+- **Amazon Aurora → pt-online-schema-change** — gh-ost requires additional configuration and workarounds to run against Aurora (`--allow-on-master`, binary log configuration). pt-osc works correctly without extra configuration.
 
 - **Standalone MySQL or async replication, no triggers → gh-ost (default)** — gh-ost uses binlog streaming rather than triggers, making it pausable, throttleable, and safer for high-write environments. It's the preferred tool when no triggers or cluster topology prevents it.
 
@@ -170,8 +177,8 @@ For automated pipelines, `dbsafe plan --format json` lets you extract the algori
 
 ## Summary
 
-1. **COPY algorithm means a full table duplicate** — MySQL creates a new table, copies every row, then swaps. Disk space doubles temporarily, and exclusive locks are held throughout on standalone MySQL.
-2. **The most common COPY triggers are** `MODIFY COLUMN` (any size or type change), `CHANGE COLUMN` with a type change, charset conversions (`CONVERT TO CHARACTER SET`), primary key changes, and adding `NOT NULL` without a default.
+1. **COPY algorithm means a full table duplicate** — MySQL creates a new table, copies every row, then swaps. Disk space doubles temporarily. DML (writes) is blocked throughout under `LOCK=SHARED`, but reads can continue.
+2. **The most common COPY triggers are** `MODIFY COLUMN` (any size or type change that crosses the VARCHAR length-prefix boundary or changes binary encoding), `CHANGE COLUMN` with a type change, and dropping a primary key without replacement. Charset conversions and some other structural changes use INPLACE with a full rebuild — the row copy still happens, but concurrent reads and writes are allowed.
 3. **Risk scales with table size** — a COPY on a 500GB table takes hours; a COPY on a 50MB table takes seconds. dbsafe estimates duration from your actual row count and row size.
 4. **dbsafe detects the algorithm and generates the mitigation command** — gh-ost for standalone and async replication, pt-osc for triggered tables, Galera/PXC clusters, and Aurora.
 5. **Always run `dbsafe plan` before any production schema change** — especially for operations that look innocent, like expanding a VARCHAR or renaming a column with a type change.
@@ -191,6 +198,7 @@ Happy (safe) schema changes!
 **Tools:**
 - [dbsafe — GitHub Repository](https://github.com/nethalo/dbsafe)
 - [gh-ost — GitHub's Online Schema Migration Tool](https://github.com/github/gh-ost)
+- [gh-ost Triggerless Design](https://github.com/github/gh-ost/blob/master/doc/triggerless-design.md)
 - [pt-online-schema-change — Percona Toolkit](https://docs.percona.com/percona-toolkit/pt-online-schema-change.html)
 
 **Related Posts:**
